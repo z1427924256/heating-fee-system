@@ -403,6 +403,30 @@
     .data-card.selected .data-card-header { background: var(--blue-50); }
     .data-card-header { align-items: center; }
     .data-card-check { margin-right: 12px; }
+    /* ===== Brand Logo Avatar ===== */
+    .brand-logo {
+      border-radius: 8px;
+      object-fit: contain;
+      background: var(--white);
+      flex-shrink: 0;
+    }
+    .brand-logo-fallback {
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 700;
+      flex-shrink: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
     .data-table tr.selected td { background: var(--blue-50) !important; }
     .data-table .td-check { width: 40px; text-align: center; }
     .data-table .th-check { width: 40px; text-align: center; }
@@ -847,6 +871,66 @@ function getStatusKey(sheetName, seq) {
   return sheetName + '_' + seq;
 }
 
+// ===== Brand Logo Mapping =====
+const BRAND_LOGO = {
+  '海信': 'https://logos.hunter.io/hisense.com',
+  '海尔': 'https://logos.hunter.io/haier.com',
+  'TCL': 'https://logos.hunter.io/tcl.com',
+  '长虹': 'https://logos.hunter.io/changhong.com',
+  '美的电采暖': 'https://logos.hunter.io/midea.com',
+  '格力': 'https://logos.hunter.io/gree.com',
+  '韩电电器': 'https://api.companyenrich.com/logo/handi.com.cn',
+  '苏宁': 'https://logos.hunter.io/suning.com',
+  '火星人': 'https://logos.hunter.io/marssenger.com',
+  '博世/安吉尔': 'https://logos.hunter.io/bosch.com',
+  '创维': 'https://logos.hunter.io/skyworth.com',
+  '汉斯顿净水': 'https://api.companyenrich.com/logo/hansiton.com',
+  '美的智慧厨房': 'https://logos.hunter.io/midea.com',
+  '万和': 'https://logos.hunter.io/vanward.com',
+  '奥克斯': 'https://api.companyenrich.com/logo/aaux.com',
+  '松下': 'https://logos.hunter.io/panasonic.com',
+  '华帝': 'https://logos.hunter.io/vatti.com.cn',
+  '苏宁易购': 'https://logos.hunter.io/suning.com',
+  '天猫': 'https://logos.hunter.io/tmall.com',
+  '天猫优品': 'https://logos.hunter.io/tmall.com',
+  '百得': 'https://logos.hunter.io/blackanddecker.com',
+  '菲斯曼': 'https://logos.hunter.io/viessmann.com',
+  '京东家电': 'https://logos.hunter.io/jd.com',
+  '方太': 'https://logos.hunter.io/fotile.com',
+  '美的COLMO': 'https://logos.hunter.io/midea.com',
+  '沁园': 'https://api.companyenrich.com/logo/truliva.com',
+  '老板': 'https://logos.hunter.io/robam.com',
+  '威能': 'https://logos.hunter.io/vaillant.com',
+  '帅康': 'https://api.companyenrich.com/logo/sacon.com.cn',
+  '拓森': 'https://api.companyenrich.com/logo/taoson.cn',
+  'TCL、美的': 'https://logos.hunter.io/tcl.com',
+  '三星/奥克斯': 'https://logos.hunter.io/samsung.com',
+  '万家乐厨电': 'https://api.companyenrich.com/logo/macro.com.cn',
+  '美的厨电': 'https://logos.hunter.io/midea.com'
+};
+
+// 品牌首字颜色表（用于Logo加载失败时的回退头像）
+const BRAND_COLORS = ['#2563EB','#DC2626','#059669','#D97706','#7C3AED','#DB2777','#0891B2','#4F46E5','#EA580C','#0D9488'];
+
+function getBrandColor(brand) {
+  if (!brand) return '#64748B';
+  var hash = 0;
+  for (var i = 0; i < brand.length; i++) hash = brand.charCodeAt(i) + ((hash << 5) - hash);
+  return BRAND_COLORS[Math.abs(hash) % BRAND_COLORS.length];
+}
+
+function getBrandLogoHTML(brand, size) {
+  var sz = size || 40;
+  var logoUrl = brand && BRAND_LOGO[brand] ? BRAND_LOGO[brand] : '';
+  var firstChar = brand ? brand.charAt(0) : '?';
+  var bgColor = getBrandColor(brand);
+  if (logoUrl) {
+    return '<img class="brand-logo" src="' + logoUrl + '" alt="' + escHtml(brand || '') + '" style="width:' + sz + 'px;height:' + sz + 'px;" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">' +
+           '<div class="brand-logo-fallback" style="width:' + sz + 'px;height:' + sz + 'px;background:' + bgColor + ';display:none;font-size:' + Math.round(sz * 0.45) + 'px;">' + escHtml(firstChar) + '</div>';
+  }
+  return '<div class="brand-logo-fallback" style="width:' + sz + 'px;height:' + sz + 'px;background:' + bgColor + ';font-size:' + Math.round(sz * 0.45) + 'px;">' + escHtml(firstChar) + '</div>';
+}
+
 // ===== Utility =====
 function fmtMoney(v) {
   if (v === '' || v === null || v === undefined) return '-';
@@ -994,10 +1078,13 @@ function renderCards(records) {
     // Header - checkbox + brand & tenant + status
     html += '<div class="data-card-header">';
     html += '<span class="check-box data-card-check' + (isSelected ? ' checked' : '') + '" onclick="toggleSelect(\'' + record._id + '\')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>';
-    html += '<div class="data-card-main-info" onclick="toggleSelect(\'' + record._id + '\')">';
+    html += '<div class="brand-logo-wrap" onclick="toggleSelect(\'' + record._id + '\')">';
+    html += getBrandLogoHTML(record.brand, 40);
+    html += '<div class="data-card-main-info">';
     html += '<div class="data-card-brand">' + escHtml(record.brand || '-') + '</div>';
     html += '<div class="data-card-tenant">' + escHtml(record.tenant || record.owner || '-') + '</div>';
     html += '<div class="data-card-room">房号：' + escHtml(record.roomNo) + '</div>';
+    html += '</div>';
     html += '</div>';
     html += '<span class="data-card-status ' + statusClass + '" onclick="toggleStatus(\'' + recSheet + '\',' + record.seq + ')">' + statusText + '</span>';
     html += '</div>';
@@ -1047,7 +1134,11 @@ function renderTable(records) {
     DISPLAY_FIELDS.forEach(function(field) {
       const val = fmtValue(record[field.key], field.type);
       const cls = field.type === 'money' ? ' class="td-money"' : '';
-      html += '<td' + cls + '>' + escHtml(val) + '</td>';
+      if (field.key === 'brand') {
+        html += '<td' + cls + ' style="white-space:nowrap;"><span style="display:inline-flex;align-items:center;gap:6px;">' + getBrandLogoHTML(record.brand, 24) + escHtml(val) + '</span></td>';
+      } else {
+        html += '<td' + cls + '>' + escHtml(val) + '</td>';
+      }
     });
     html += '</tr>';
   });
@@ -1231,20 +1322,12 @@ function buildReceiptHTML(record, sheetName) {
   html += '<hr class="export-receipt-divider">';
 
   // Key info first (brand, tenant, roomNo)
-  html += '<div class="export-field-row">';
-  html += '<div class="export-field-label">经营品牌</div>';
-  html += '<div class="export-field-value" style="font-weight:700;font-size:16px;color:#1E293B">' + escHtml(record.brand || '-') + '</div>';
-  html += '</div>';
-
-  html += '<div class="export-field-row">';
-  html += '<div class="export-field-label">租户姓名</div>';
-  html += '<div class="export-field-value" style="font-weight:600;font-size:15px;color:#334155">' + escHtml(record.tenant || record.owner || '-') + '</div>';
-  html += '</div>';
-
-  html += '<div class="export-field-row">';
-  html += '<div class="export-field-label">房号</div>';
-  html += '<div class="export-field-value" style="color:#64748B">' + escHtml(record.roomNo) + '</div>';
-  html += '</div>';
+  html += '<div style="display:flex;align-items:center;gap:12px;margin:8px 0;">';
+  html += getBrandLogoHTML(record.brand, 48);
+  html += '<div>';
+  html += '<div style="font-weight:700;font-size:16px;color:#1E293B">' + escHtml(record.brand || '-') + '</div>';
+  html += '<div style="font-size:13px;color:#64748B;margin-top:2px">租户：' + escHtml(record.tenant || record.owner || '-') + '　房号：' + escHtml(record.roomNo) + '</div>';
+  html += '</div></div>';
 
   // Other fields
   html += buildRecordDetailFields(record);
@@ -1295,20 +1378,12 @@ function buildGroupReceiptHTML(subtitle, items) {
 
     html += '<div class="export-room-header">房间 ' + (idx + 1) + ' / ' + items.length + '：' + escHtml(record.roomNo) + '（' + escHtml(sheetTitle) + '）</div>';
 
-    html += '<div class="export-field-row">';
-    html += '<div class="export-field-label">经营品牌</div>';
-    html += '<div class="export-field-value" style="font-weight:700;font-size:16px;color:#1E293B">' + escHtml(record.brand || '-') + '</div>';
-    html += '</div>';
-
-    html += '<div class="export-field-row">';
-    html += '<div class="export-field-label">租户姓名</div>';
-    html += '<div class="export-field-value" style="font-weight:600;font-size:15px;color:#334155">' + escHtml(record.tenant || record.owner || '-') + '</div>';
-    html += '</div>';
-
-    html += '<div class="export-field-row">';
-    html += '<div class="export-field-label">房号</div>';
-    html += '<div class="export-field-value" style="color:#64748B">' + escHtml(record.roomNo) + '</div>';
-    html += '</div>';
+    html += '<div style="display:flex;align-items:center;gap:12px;margin:6px 0;">';
+    html += getBrandLogoHTML(record.brand, 44);
+    html += '<div>';
+    html += '<div style="font-weight:700;font-size:15px;color:#1E293B">' + escHtml(record.brand || '-') + '</div>';
+    html += '<div style="font-size:13px;color:#64748B">租户：' + escHtml(record.tenant || record.owner || '-') + '　房号：' + escHtml(record.roomNo) + '</div>';
+    html += '</div></div>';
 
     html += buildRecordDetailFields(record);
 

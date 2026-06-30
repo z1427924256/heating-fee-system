@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)https://96cebc9f-43ad-49a1-b655-e3f249da0772.dev.coze.site/ -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="商场暖气费查询导出系统">
+  <title>商场暖气费查询导出系统</title>
+  <!-- html2canvas for image export (CDN, fixes "保存图片失败") -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    /* ===== CSS Reset & Base ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-700: #1D4ED8;
+      --blue-600: #2563EB;
+      --blue-500: #3B82F6;
+      --blue-50: #EFF6FF;
+      --green-600: #16A34A;
+      --green-50: #F0FDF4;
+      --red-600: #DC2626;
+      --red-50: #FEF2F2;
+      --slate-50: #F8FAFC;
+      --slate-100: #F1F5F9;
+      --slate-200: #E2E8F0;
+      --slate-300: #CBD5E1;
+      --slate-400: #94A3B8;
+      --slate-500: #64748B;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1E293B;
+      --white: #FFFFFF;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+      --radius: 8px;
+      --transition: 150ms ease-out;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--slate-50);
+      color: var(--slate-700);
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== App Shell ===== */
+    .app-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    /* ===== Header ===== */
+    .app-header {
+      text-align: center;
+      padding: 20px 0 16px;
+      border-bottom: 1px solid var(--slate-200);
+      margin-bottom: 16px;
+    }
+    .app-header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--blue-700);
+      letter-spacing: 0.5px;
+    }
+    .app-header p {
+      font-size: 13px;
+      color: var(--slate-500);
+      margin-top: 4px;
+    }
+
+    /* ===== Stats Bar ===== */
+    .stats-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .stats-item {
+      flex: 1;
+      min-width: 100px;
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+    .stats-item .stats-label {
+      font-size: 12px;
+      color: var(--slate-500);
+    }
+    .stats-item .stats-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--slate-800);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ===== Search Section ===== */
+    .search-section {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .search-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .search-input {
+      flex: 1;
+      height: 44px;
+      padding: 0 14px;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+      font-size: 15px;
+      color: var(--slate-700);
+      background: var(--white);
+      outline: none;
+      transition: border-color var(--transition);
+      min-width: 0;
+    }
+    .search-input:focus {
+      border-color: var(--blue-500);
+    }
+    .search-input::placeholder {
+      color: var(--slate-400);
+    }
+    .search-btn {
+      height: 44px;
+      min-width: 68px;
+      padding: 0 14px;
+      background: var(--blue-700);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition), transform 80ms;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .search-btn:hover { background: var(--blue-500); }
+    .search-btn:active { transform: scale(0.97); }
+    .search-hint {
+      font-size: 12px;
+      color: var(--slate-400);
+      margin-top: 8px;
+    }
+
+    /* ===== Tab Section ===== */
+    .tab-section {
+      display: flex;
+      gap: 0;
+      margin-bottom: 16px;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px 8px;
+      border: none;
+      background: var(--white);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-500);
+      cursor: pointer;
+      transition: all var(--transition);
+      position: relative;
+    }
+    .tab-btn:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: var(--slate-200);
+    }
+    .tab-btn.active {
+      color: var(--blue-700);
+      background: var(--blue-50);
+      font-weight: 600;
+    }
+    .tab-btn .tab-count {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--slate-200);
+      color: var(--slate-600);
+      border-radius: 10px;
+      padding: 1px 6px;
+      margin-left: 4px;
+    }
+    .tab-btn.active .tab-count {
+      background: var(--blue-500);
+      color: var(--white);
+    }
+
+    /* ===== Data Section ===== */
+    .data-section { margin-bottom: 32px; }
+
+    /* ===== Data Cards (mobile) ===== */
+    .data-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .data-card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .data-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .data-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--slate-100);
+      background: var(--slate-50);
+    }
+    .data-card-main-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .data-card-brand {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--slate-800);
+      line-height: 1.4;
+      word-break: break-all;
+    }
+    .data-card-tenant {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--slate-700);
+      margin-top: 2px;
+    }
+    .data-card-room {
+      font-size: 12px;
+      color: var(--slate-400);
+      margin-top: 2px;
+    }
+    .data-card-status {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: all var(--transition);
+    }
+    .status-paid {
+      background: var(--green-50);
+      color: var(--green-600);
+      border: 1px solid #BBF7D0;
+    }
+    .status-unpaid {
+      background: var(--red-50);
+      color: var(--red-600);
+      border: 1px solid #FECACA;
+    }
+    .data-card-body {
+      padding: 12px 16px;
+    }
+    .card-field {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 4px 0;
+      border-bottom: 1px dashed var(--slate-100);
+    }
+    .card-field:last-child { border-bottom: none; }
+    .card-field-label {
+      font-size: 13px;
+      color: var(--slate-500);
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+    .card-field-value {
+      font-size: 14px;
+      color: var(--slate-800);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      word-break: break-all;
+    }
+    .card-field-value.money {
+      font-weight: 600;
+      color: var(--slate-800);
+    }
+    .card-field-value.remark {
+      color: var(--red-600);
+      font-weight: 500;
+    }
+    .data-card-actions {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--slate-100);
+      background: var(--slate-50);
+    }
+    .card-action-btn {
+      flex: 1;
+      height: 44px;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      background: var(--white);
+      color: var(--slate-700);
+    }
+    .card-action-btn:hover {
+      border-color: var(--blue-500);
+      color: var(--blue-700);
+      background: var(--blue-50);
+    }
+    .card-action-btn:active { transform: scale(0.97); }
+    .card-action-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+    .card-action-btn.btn-share {
+      background: #07C160;
+      color: var(--white);
+      border-color: #07C160;
+    }
+    .card-action-btn.btn-share:hover {
+      background: #06AD56;
+      border-color: #06AD56;
+      color: var(--white);
+    }
+    .card-action-btn.btn-discount {
+      background: #F59E0B;
+      color: var(--white);
+      border-color: #F59E0B;
+    }
+    .card-action-btn.btn-discount:hover {
+      background: #D97706;
+      border-color: #D97706;
+      color: var(--white);
+    }
+    .card-field-value.discount-val {
+      color: #D97706;
+      font-weight: 600;
+    }
+
+    /* ===== Checkbox (cart-style multi-select) ===== */
+    .check-box {
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+      border: 2px solid var(--slate-400);
+      border-radius: 50%;
+      background: var(--white);
+      cursor: pointer;
+      transition: all var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .check-box svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--white);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      opacity: 0;
+      transition: opacity var(--transition);
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.25));
+    }
+    .check-box.checked {
+      background: var(--blue-600);
+      border-color: var(--blue-600);
+      box-shadow: 0 2px 8px rgba(37,99,235,0.4);
+    }
+    .check-box.checked svg { opacity: 1; }
+    .data-card.selected {
+      border-color: var(--blue-500);
+      box-shadow: 0 0 0 1px var(--blue-500), var(--shadow-sm);
+      background: var(--blue-50);
+    }
+    .data-card.selected .data-card-header { background: var(--blue-50); }
+    .data-card-header { align-items: center; }
+    .data-card-check { margin-right: 12px; }
+    .data-table tr.selected td { background: var(--blue-50) !important; }
+    .data-table .td-check { width: 40px; text-align: center; }
+    .data-table .th-check { width: 40px; text-align: center; }
+
+    /* ===== Top discount toggle ===== */
+    .discount-toggle-btn {
+      height: 44px;
+      padding: 0 14px;
+      border: 1px solid #F59E0B;
+      border-radius: 6px;
+      background: #FFFBEB;
+      color: #D97706;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .discount-toggle-btn:hover { background: #F59E0B; color: var(--white); }
+    .discount-toggle-btn svg { width: 16px; height: 16px; }
+    .search-row { flex-wrap: wrap; }
+
+    /* ===== Bottom action bar (cart-style) ===== */
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      background: var(--white);
+      border-top: 1px solid var(--slate-200);
+      box-shadow: 0 -2px 12px rgba(15,23,42,0.08);
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
+    .bottom-bar.show { display: flex; }
+    .bb-select-all {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--slate-700);
+      flex-shrink: 0;
+    }
+    .bb-summary {
+      flex: 1;
+      min-width: 0;
+      font-size: 13px;
+      color: var(--slate-500);
+      line-height: 1.3;
+    }
+    .bb-summary .bb-count { color: var(--blue-700); font-weight: 700; font-size: 15px; }
+    .bb-summary .bb-total { color: var(--red-600); font-weight: 700; font-size: 16px; }
+    .bb-export-btn {
+      height: 48px;
+      min-width: 140px;
+      padding: 0 28px;
+      border: none;
+      border-radius: 24px;
+      background: var(--slate-300);
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: not-allowed;
+      transition: all var(--transition);
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+    .bb-export-btn.active {
+      background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+      cursor: pointer;
+      opacity: 1;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.45);
+    }
+    .bb-export-btn.active:active { transform: scale(0.96); }
+    /* 底部固定操作栏高度约68px，需留足空间避免遮挡卡片内容 */
+    .app-container { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+
+    /* ===== Data Table (desktop) ===== */
+    .data-table-wrap {
+      display: none;
+      overflow-x: auto;
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .data-table th {
+      background: var(--slate-50);
+      color: var(--slate-600);
+      font-weight: 600;
+      font-size: 12px;
+      padding: 10px 12px;
+      text-align: left;
+      white-space: nowrap;
+      border-bottom: 2px solid var(--slate-200);
+      position: sticky;
+      top: 0;
+    }
+    .data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--slate-100);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .data-table tr:hover td { background: var(--blue-50); }
+    .data-table .td-money { font-weight: 600; text-align: right; }
+    .data-table .td-action { white-space: nowrap; }
+    .data-table .td-action button {
+      padding: 4px 10px;
+      margin-right: 4px;
+      border: 1px solid var(--slate-300);
+      border-radius: 4px;
+      font-size: 12px;
+      background: var(--white);
+      color: var(--slate-700);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .data-table .td-action button:hover {
+      border-color: var(--blue-500);
+      color: var(--blue-700);
+    }
+    .data-table .td-action button.btn-share {
+      background: #07C160;
+      color: var(--white);
+      border-color: #07C160;
+    }
+    .data-table .td-action button.btn-discount {
+      background: #F59E0B;
+      color: var(--white);
+      border-color: #F59E0B;
+    }
+    .data-table .status-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    /* ===== Empty State ===== */
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--slate-400);
+    }
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+      stroke: var(--slate-300);
+    }
+    .empty-state p {
+      font-size: 15px;
+    }
+
+    /* ===== Toast ===== */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      pointer-events: none;
+    }
+    .toast {
+      background: var(--slate-800);
+      color: var(--white);
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 200ms ease;
+      pointer-events: auto;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== Export Template (hidden, for rendering) ===== */
+    .export-template {
+      position: fixed;
+      left: -9999px;
+      top: 0;
+      z-index: -1;
+      background: var(--white);
+    }
+    .export-receipt {
+      width: 375px;
+      padding: 24px 20px;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--slate-800);
+      background: var(--white);
+    }
+    .export-receipt-title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--blue-700);
+      margin-bottom: 4px;
+    }
+    .export-receipt-subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: var(--slate-500);
+      margin-bottom: 20px;
+    }
+    .export-receipt-divider {
+      border: none;
+      border-top: 2px solid var(--blue-700);
+      margin: 12px 0;
+    }
+    .export-field-row {
+      display: flex;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--slate-100);
+      line-height: 1.6;
+    }
+    .export-field-row:last-child { border-bottom: none; }
+    .export-field-label {
+      flex-shrink: 0;
+      width: 120px;
+      font-size: 13px;
+      color: var(--slate-500);
+    }
+    .export-field-value {
+      flex: 1;
+      font-size: 14px;
+      color: var(--slate-800);
+      font-variant-numeric: tabular-nums;
+      word-break: break-all;
+    }
+    .export-field-value.money {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .export-field-value.remark-val {
+      color: var(--red-600);
+      font-weight: 500;
+    }
+    .export-stamp {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--slate-300);
+      text-align: right;
+      font-size: 12px;
+      color: var(--slate-400);
+    }
+    .export-room-header {
+      background: var(--blue-50);
+      color: var(--blue-700);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin: 16px 0 4px;
+    }
+    .export-room-header:first-of-type { margin-top: 0; }
+    .export-room-divider {
+      border: none;
+      border-top: 1px dashed var(--slate-300);
+      margin: 12px 0;
+    }
+    .export-summary {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-top: 16px;
+    }
+    .export-summary-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-600);
+      margin-bottom: 4px;
+    }
+
+    /* ===== Desktop: show table, hide cards ===== */
+    @media (min-width: 768px) {
+      .data-cards { display: none; }
+      .data-table-wrap { display: block; }
+      .app-container { padding: 24px; padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+      .app-header h1 { font-size: 22px; }
+    }
+
+    /* ===== Print ===== */
+    @media print {
+      .search-section, .tab-section, .stats-bar, .data-card-actions, .td-action, .bottom-bar { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <h1>商场暖气费查询导出系统</h1>
+      <p>2026年度暖气费台账查询与单据导出</p>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-bar" id="statsBar"><div class="stats-item"><div class="stats-label">总户数</div><div class="stats-value">53</div></div><div class="stats-item"><div class="stats-label">已缴费</div><div class="stats-value" style="color:var(--green-600)">0</div></div><div class="stats-item"><div class="stats-label">未缴费</div><div class="stats-value" style="color:var(--red-600)">53</div></div></div>
+
+    <!-- Search -->
+    <section class="search-section">
+      <div class="search-row">
+        <input type="text" class="search-input" id="searchInput" placeholder="输入房号/商户名/品牌/户主搜索" inputmode="text">
+        <button class="search-btn" id="searchBtn">查询</button>
+        <button class="discount-toggle-btn" id="discountToggleBtn" onclick="toggleDiscount()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span id="discountToggleText">隐藏折扣</span>
+        </button>
+      </div>
+      <div class="search-hint">支持模糊搜索，输入部分关键词即可查找</div>
+    </section>
+
+    <!-- Tabs -->
+    <div class="tab-section" id="tabSection"><button class="tab-btn active" data-sheet="小业主面积">小业主面积<span class="tab-count">32</span></button><button class="tab-btn" data-sheet="自有面积">自有面积<span class="tab-count">21</span></button></div>
+
+    <!-- Data Display -->
+    <section class="data-section">
+      <div class="data-cards" id="dataCards"><div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg><p>请输入关键词查询暖气费信息</p></div></div>
+      <div class="data-table-wrap">
+        <table class="data-table" id="dataTable"></table>
+      </div>
+    </section>
+
+    <!-- Bottom action bar (cart-style multi-select export) -->
+    <div class="bottom-bar" id="bottomBar">
+      <div class="bb-select-all" onclick="toggleSelectAll()">
+        <span class="check-box" id="bbSelectAllBox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>全选</span>
+      </div>
+      <div class="bb-summary" id="bbSummary">请选择要导出的房间</div>
+      <button class="bb-export-btn" id="bbExportBtn" onclick="exportSelected()">导出图片</button>
+    </div>
+  </div>
+
+  <!-- Export Template (hidden) -->
+  <div class="export-template" id="exportTemplate">
+    <div class="export-receipt" id="exportReceipt"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer">
+    <div class="toast" id="toast"></div>
+  </div>
+
+<script>
+// ===== Hardcoded Data =====
+const SHEETS = {
+  '小业主面积': [
+    {seq:1,roomNo:"101/201",surveyArea:987.94,shutterArea:0,finalArea:987.94,owner:"银行",ownerType:"业主自行出租",tenant:"银行",brand:"银行",fee2025:20746.74,fee2026:20746.74,total:41493.48,discount9:37344.132,remark:""},
+    {seq:2,roomNo:"104",surveyArea:245.32,shutterArea:0,finalArea:245.32,owner:"王新海",ownerType:"业主自行出租",tenant:"胡辉",brand:"海信",fee2025:5151.72,fee2026:5151.72,total:10303.44,discount9:9273.096,remark:""},
+    {seq:3,roomNo:"105",surveyArea:245.32,shutterArea:13.64711885,finalArea:231.67288115,owner:"胡志玲",ownerType:"业主自行出租",tenant:"杨永畅",brand:"海尔",fee2025:4865.13050415,fee2026:4865.13050415,total:9730.2610083,discount9:8757.23490747,remark:""},
+    {seq:4,roomNo:"106",surveyArea:256.33,shutterArea:0,finalArea:256.33,owner:"顿昕",ownerType:"业主自行出租",tenant:"罗杰",brand:"TCL",fee2025:5382.93,fee2026:5382.93,total:10765.86,discount9:9689.274,remark:""},
+    {seq:5,roomNo:"107",surveyArea:266.11,shutterArea:0,finalArea:266.11,owner:"王敬明",ownerType:"业主自行出租",tenant:"胡致炜",brand:"长虹",fee2025:5588.31,fee2026:5588.31,total:11176.62,discount9:10058.958,remark:""},
+    {seq:6,roomNo:"108",surveyArea:245.32,shutterArea:13.64711885,finalArea:231.67288115,owner:"汪灿金",ownerType:"业主自行出租",tenant:"张富胜",brand:"美的电采暖",fee2025:4865.13050415,fee2026:4865.13050415,total:9730.2610083,discount9:8757.23490747,remark:""},
+    {seq:7,roomNo:"110",surveyArea:245.12,shutterArea:0,finalArea:245.12,owner:"张少波",ownerType:"业主自行出租",tenant:"孔磊",brand:"格力",fee2025:5147.52,fee2026:5147.52,total:10295.04,discount9:9265.536,remark:""},
+    {seq:8,roomNo:"111",surveyArea:192.07,shutterArea:0,finalArea:192.07,owner:"苏小芳",ownerType:"业主自行出租",tenant:"伊力买买提",brand:"韩电电器",fee2025:806.694,fee2026:4033.47,total:4840.164,discount9:4356.1476,remark:"2月进场"},
+    {seq:9,roomNo:"112",surveyArea:243.94,shutterArea:0,finalArea:243.94,owner:"王新萍",ownerType:"业主自行出租",tenant:"王鹏",brand:"苏宁",fee2025:0,fee2026:5122.74,total:5122.74,discount9:4610.466,remark:""},
+    {seq:10,roomNo:"122",surveyArea:245.32,shutterArea:0,finalArea:245.32,owner:"王卫兵",ownerType:"业主自行出租",tenant:"张子俊",brand:"火星人",fee2025:5151.72,fee2026:5151.72,total:10303.44,discount9:9273.096,remark:""},
+    {seq:11,roomNo:"123",surveyArea:129.44,shutterArea:0,finalArea:129.44,owner:"朱时祥",ownerType:"业主自行出租",tenant:"张国凤",brand:"博世/安吉尔",fee2025:2174.592,fee2026:2718.24,total:4892.832,discount9:4403.5488,remark:"11月进场"},
+    {seq:12,roomNo:"124",surveyArea:245.68,shutterArea:0,finalArea:245.68,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:5159.28,fee2026:5159.28,total:10318.56,discount9:9286.704,remark:""},
+    {seq:13,roomNo:"125",surveyArea:245.32,shutterArea:0,finalArea:245.32,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:5151.72,fee2026:5151.72,total:10303.44,discount9:9273.096,remark:""},
+    {seq:14,roomNo:"126",surveyArea:239.92,shutterArea:0,finalArea:239.92,owner:"王新海",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:5038.32,fee2026:5038.32,total:10076.64,discount9:9068.976,remark:""},
+    {seq:15,roomNo:"127",surveyArea:50.41,shutterArea:0,finalArea:50.41,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:1058.61,fee2026:1058.61,total:2117.22,discount9:1905.498,remark:""},
+    {seq:16,roomNo:"128",surveyArea:66.39,shutterArea:0,finalArea:66.39,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1394.19,fee2026:1394.19,total:2788.38,discount9:2509.542,remark:""},
+    {seq:17,roomNo:"129",surveyArea:66.39,shutterArea:0,finalArea:66.39,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1394.19,fee2026:1394.19,total:2788.38,discount9:2509.542,remark:""},
+    {seq:18,roomNo:"130",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1045.59,fee2026:1045.59,total:2091.18,discount9:1882.062,remark:""},
+    {seq:19,roomNo:"131",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1045.59,fee2026:1045.59,total:2091.18,discount9:1882.062,remark:""},
+    {seq:20,roomNo:"137",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"杨秋霞",ownerType:"业主自行出租",tenant:"李涛",brand:"汉斯顿净水",fee2025:1045.59,fee2026:1045.59,total:2091.18,discount9:1882.062,remark:""},
+    {seq:21,roomNo:"144",surveyArea:50.41,shutterArea:0,finalArea:50.41,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:1058.61,fee2026:1058.61,total:2117.22,discount9:1905.498,remark:""},
+    {seq:22,roomNo:"151",surveyArea:44.31,shutterArea:4.4260926,finalArea:39.8839074,owner:"陈其满",ownerType:"业主自行出租",tenant:"汤汉飞",brand:"美的智慧厨房",fee2025:837.5620554,fee2026:837.5620554,total:1675.1241108,discount9:1507.61169972,remark:""},
+    {seq:23,roomNo:"163",surveyArea:46.47,shutterArea:0,finalArea:46.47,owner:"刘功莲",ownerType:"业主自行出租",tenant:"潘文锐",brand:"万和",fee2025:975.87,fee2026:975.87,total:1951.74,discount9:1756.566,remark:""},
+    {seq:24,roomNo:"183",surveyArea:46.52,shutterArea:0,finalArea:46.52,owner:"朱琳",ownerType:"业主自行出租",tenant:"严合群",brand:"奥克斯",fee2025:976.92,fee2026:976.92,total:1953.84,discount9:1758.456,remark:""},
+    {seq:25,roomNo:"194",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"郭萍",ownerType:"业主自营",tenant:"郭萍",brand:"苏宁易购",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""},
+    {seq:26,roomNo:"195",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"郭萍",ownerType:"业主自营",tenant:"郭萍",brand:"苏宁易购",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""},
+    {seq:27,roomNo:"196",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"郭君",ownerType:"业主自营",tenant:"郭萍",brand:"苏宁易购",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""},
+    {seq:28,roomNo:"1112",surveyArea:55.33,shutterArea:0,finalArea:55.33,owner:"陈登社",ownerType:"业主自行出租",tenant:"候保玉",brand:"天猫",fee2025:1161.93,fee2026:1161.93,total:2323.86,discount9:2091.474,remark:""},
+    {seq:29,roomNo:"1114",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"陈登社",ownerType:"业主自行出租",tenant:"候保玉",brand:"天猫",fee2025:1045.59,fee2026:1045.59,total:2091.18,discount9:1882.062,remark:""},
+    {seq:30,roomNo:"1125",surveyArea:129.44,shutterArea:0,finalArea:129.44,owner:"尹艺璇",ownerType:"业主自营",tenant:"/",brand:"菲斯曼",fee2025:2718.24,fee2026:2718.24,total:5436.48,discount9:4892.832,remark:""},
+    {seq:31,roomNo:"158",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"赵银川",ownerType:"业主自营",tenant:"赵银川",brand:"百得",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""},
+    {seq:32,roomNo:"159",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"赵银川",ownerType:"业主自营",tenant:"赵银川",brand:"百得",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""}
+  ],
+  '自有面积': [
+    {seq:1,roomNo:"HN-1-1-03",surveyArea:'',shutterArea:'',finalArea:121.3,owner:"新华能",ownerType:"商场自有",tenant:"胡辉",brand:"美的厨电",fee2025:2929.395,fee2026:2929.395,total:5858.79,discount9:5272.911,remark:""},
+    {seq:2,roomNo:"HN-1-1-06/1",surveyArea:'',shutterArea:'',finalArea:160.08,owner:"新华能",ownerType:"商场自有",tenant:"李源峰",brand:"美的COLMO",fee2025:3865.932,fee2026:3865.932,total:7732,discount9:6958,remark:""},
+    {seq:3,roomNo:"HN-1-1-06/2",surveyArea:'',shutterArea:'',finalArea:162.98,owner:"新华能",ownerType:"商场自有",tenant:"李源峰",brand:"美的COLMO",fee2025:3935.967,fee2026:3935.967,total:7872,discount9:7084,remark:""},
+    {seq:4,roomNo:"HN-1-1-06/3",surveyArea:'',shutterArea:'',finalArea:162.43,owner:"新华能",ownerType:"商场自有",tenant:"李源峰",brand:"美的COLMO",fee2025:3922.6845,fee2026:3922.6845,total:7846,discount9:7061,remark:""},
+    {seq:5,roomNo:"HN-1-1-08",surveyArea:'',shutterArea:'',finalArea:200.87,owner:"新华能",ownerType:"商场自有",tenant:"侯宝玉",brand:"天猫优品",fee2025:4851.0105,fee2026:4851.0105,total:9702.021,discount9:8731.8189,remark:""},
+    {seq:6,roomNo:"HN-1-1-09",surveyArea:'',shutterArea:'',finalArea:341.7,owner:"新华能",ownerType:"商场自有",tenant:"凤潇",brand:"拓森",fee2025:0,fee2026:0,total:8252.055,discount9:7426.8495,remark:"未营业"},
+    {seq:7,roomNo:"HN-1-1-10",surveyArea:'',shutterArea:'',finalArea:630.19,owner:"新华能",ownerType:"商场自有",tenant:"张泽",brand:"京东家电",fee2025:15219.0885,fee2026:15219.0885,total:30438.177,discount9:27394.3593,remark:""},
+    {seq:8,roomNo:"HN-1-1-11",surveyArea:'',shutterArea:'',finalArea:232.15,owner:"新华能",ownerType:"商场自有",tenant:"侯宝玉",brand:"天猫优品",fee2025:5606.4225,fee2026:5606.4225,total:11212.845,discount9:10091.5605,remark:""},
+    {seq:9,roomNo:"HN-1-1-12",surveyArea:'',shutterArea:'',finalArea:445.63,owner:"新华能",ownerType:"商场自有",tenant:"胡辉",brand:"TCL、美的",fee2025:10761.9645,fee2026:10761.9645,total:21523.929,discount9:19371.5361,remark:""},
+    {seq:10,roomNo:"HN-1-1-15",surveyArea:'',shutterArea:'',finalArea:167.88,owner:"新华能",ownerType:"商场自有",tenant:"严合群",brand:"三星/奥克斯",fee2025:4054.302,fee2026:4054.302,total:8108.604,discount9:7297.7436,remark:""},
+    {seq:11,roomNo:"HN-1-1-16",surveyArea:'',shutterArea:'',finalArea:114.48,owner:"新华能",ownerType:"商场自有",tenant:"薛文硕",brand:"万家乐厨电",fee2025:2764.692,fee2026:2764.692,total:5529.384,discount9:4976.4456,remark:""},
+    {seq:12,roomNo:"HN-1-1-17",surveyArea:'',shutterArea:'',finalArea:103.94,owner:"新华能",ownerType:"商场自有",tenant:"汤汉飞",brand:"美的厨电",fee2025:2510.151,fee2026:2510.151,total:5020.302,discount9:4518.2718,remark:""},
+    {seq:13,roomNo:"HN-1-1-18",surveyArea:'',shutterArea:'',finalArea:303,owner:"新华能",ownerType:"商场自有",tenant:"刘旭",brand:"方太",fee2025:7317.45,fee2026:7317.45,total:14634.9,discount9:13171.41,remark:""},
+    {seq:14,roomNo:"HN-1-1-19",surveyArea:'',shutterArea:'',finalArea:169.5,owner:"新华能",ownerType:"商场自有",tenant:"程秀丽",brand:"华帝",fee2025:4093.425,fee2026:4093.425,total:8186.85,discount9:7368.165,remark:""},
+    {seq:15,roomNo:"HN-1-1-20",surveyArea:'',shutterArea:'',finalArea:82.9,owner:"新华能",ownerType:"商场自有",tenant:"赵银川",brand:"帅康",fee2025:2002.035,fee2026:2002.035,total:4004.07,discount9:3603.663,remark:""},
+    {seq:16,roomNo:"HN-1-1-21",surveyArea:'',shutterArea:'',finalArea:83.07,owner:"新华能",ownerType:"商场自有",tenant:"郭萍",brand:"苏宁",fee2025:2006.1405,fee2026:2006.1405,total:4012.281,discount9:3611.0529,remark:""},
+    {seq:17,roomNo:"HN-1-1-22",surveyArea:'',shutterArea:'',finalArea:360,owner:"新华能",ownerType:"商场自有",tenant:"张泽",brand:"京东家电",fee2025:8694,fee2026:8694,total:17388,discount9:15649.2,remark:""},
+    {seq:18,roomNo:"HN-1-1-23",surveyArea:'',shutterArea:'',finalArea:165.42,owner:"新华能",ownerType:"商场自有",tenant:"张泽",brand:"京东家电",fee2025:3994.893,fee2026:3994.893,total:7989.786,discount9:7190.8074,remark:""},
+    {seq:19,roomNo:"HN-1-1-26",surveyArea:'',shutterArea:'',finalArea:155.78,owner:"新华能",ownerType:"商场自有",tenant:"陈什崧",brand:"沁园",fee2025:3762.087,fee2026:3762.087,total:7524.174,discount9:6771.7566,remark:""},
+    {seq:20,roomNo:"HN-1-1-27",surveyArea:'',shutterArea:'',finalArea:125.27,owner:"新华能",ownerType:"商场自有",tenant:"潘文锐",brand:"老板",fee2025:3025.2705,fee2026:3025.2705,total:6050.541,discount9:5445.4869,remark:""},
+    {seq:21,roomNo:"HN-1-1-28",surveyArea:'',shutterArea:'',finalArea:165.6,owner:"新华能",ownerType:"商场自有",tenant:"胡辉",brand:"松下",fee2025:3999.24,fee2026:3999.24,total:7998.48,discount9:7198.632,remark:""},
+    {seq:22,roomNo:"HN-1-1-29",surveyArea:'',shutterArea:'',finalArea:65,owner:"新华能",ownerType:"商场自有",tenant:"李林鹏",brand:"威能",fee2025:1569.75,fee2026:1569.75,total:3139.5,discount9:2825.55,remark:""}
+  ]
+};
+
+// 给每条记录打上所属 sheet 标记，避免跨表搜索时状态/导出串表
+Object.keys(SHEETS).forEach(function(name) {
+  SHEETS[name].forEach(function(record) { record._sheet = name; record._id = name + '|' + record.seq; });
+});
+
+// ===== Field Definitions =====
+const DISPLAY_FIELDS = [
+  { key: 'roomNo', label: '房号' },
+  { key: 'surveyArea', label: '测绘面积(㎡)', type: 'area' },
+  { key: 'shutterArea', label: '卷帘圈占面积(㎡)', type: 'area' },
+  { key: 'finalArea', label: '核算面积(㎡)', type: 'area' },
+  { key: 'owner', label: '户主' },
+  { key: 'ownerType', label: '户主类别' },
+  { key: 'tenant', label: '租户姓名' },
+  { key: 'brand', label: '经营品牌' },
+  { key: 'fee2025', label: '2025暖气费(元)', type: 'money' },
+  { key: 'fee2026', label: '2026暖气费(元)', type: 'money' },
+  { key: 'total', label: '合计(元)', type: 'money' },
+  { key: 'discount9', label: '9折优惠(元)', type: 'money' },
+  { key: 'remark', label: '备注', type: 'remark' }
+];
+
+// Fields to skip in card body (shown in header)
+const CARD_HEADER_SKIP = ['roomNo', 'brand', 'tenant'];
+
+// ===== State =====
+let currentSheet = Object.keys(SHEETS)[0];
+let filteredRecords = [];
+let currentKeyword = ''; // 当前搜索关键词，用于导出图片标题
+let paymentStatus = {};  // key: sheetName_seq, value: 'paid'|'unpaid'
+let showDiscount = true; // 9折优惠显示开关
+let selectedIds = new Set(); // 购物车式多选：选中的记录 _id 集合
+let currentRenderedRecords = []; // 当前列表渲染的记录，供全选/底部栏使用
+
+// Load payment status from localStorage
+try {
+  const saved = localStorage.getItem('heating_payment_status');
+  if (saved) paymentStatus = JSON.parse(saved);
+} catch(e) {}
+
+// Load discount visibility from localStorage (persists across reloads)
+try {
+  const savedDiscount = localStorage.getItem('heating_show_discount');
+  if (savedDiscount !== null) showDiscount = (savedDiscount === '1');
+} catch(e) {}
+
+function savePaymentStatus() {
+  try { localStorage.setItem('heating_payment_status', JSON.stringify(paymentStatus)); } catch(e) {}
+}
+
+function getStatusKey(sheetName, seq) {
+  return sheetName + '_' + seq;
+}
+
+// ===== Utility =====
+function fmtMoney(v) {
+  if (v === '' || v === null || v === undefined) return '-';
+  var num = Number(v);
+  return Math.round(num).toLocaleString('zh-CN');
+}
+
+function fmtArea(v) {
+  if (v === '' || v === null || v === undefined) return '-';
+  return Number(v).toFixed(2);
+}
+
+function fmtValue(v, type) {
+  if (type === 'money') return fmtMoney(v);
+  if (type === 'area') return fmtArea(v);
+  if (v === '' || v === null || v === undefined) return '-';
+  return String(v);
+}
+
+// ===== Toast =====
+let toastTimer = null;
+function showToast(msg, duration) {
+  duration = duration || 2000;
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { el.classList.remove('show'); }, duration);
+}
+
+// ===== Stats =====
+function renderStats() {
+  const bar = document.getElementById('statsBar');
+  const sheetNames = Object.keys(SHEETS);
+  const totalCount = sheetNames.reduce(function(sum, name) { return sum + SHEETS[name].length; }, 0);
+  const paidCount = sheetNames.reduce(function(sum, name) {
+    return sum + SHEETS[name].filter(function(r) { return paymentStatus[getStatusKey(name, r.seq)] === 'paid'; }).length;
+  }, 0);
+
+  bar.innerHTML =
+    '<div class="stats-item"><div class="stats-label">总户数</div><div class="stats-value">' + totalCount + '</div></div>' +
+    '<div class="stats-item"><div class="stats-label">已缴费</div><div class="stats-value" style="color:var(--green-600)">' + paidCount + '</div></div>' +
+    '<div class="stats-item"><div class="stats-label">未缴费</div><div class="stats-value" style="color:var(--red-600)">' + (totalCount - paidCount) + '</div></div>';
+}
+
+// ===== Tabs =====
+function renderTabs() {
+  const section = document.getElementById('tabSection');
+  const sheetNames = Object.keys(SHEETS);
+  let html = '';
+  sheetNames.forEach(function(name) {
+    const isActive = name === currentSheet ? ' active' : '';
+    html += '<button class="tab-btn' + isActive + '" data-sheet="' + name + '">' + name + '<span class="tab-count">' + SHEETS[name].length + '</span></button>';
+  });
+  section.innerHTML = html;
+
+  section.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      currentSheet = this.dataset.sheet;
+      renderTabs();
+      clearSearch();
+      // Show the full list of the selected sheet
+      renderData(SHEETS[currentSheet]);
+    });
+  });
+}
+
+// ===== Search (Fuzzy Match) =====
+function doSearch() {
+  const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+
+  if (!keyword) {
+    showToast('请输入搜索关键词');
+    return;
+  }
+
+  // Search across all sheets
+  filteredRecords = [];
+  selectedIds.clear();
+  currentKeyword = keyword;
+  let matchedSheet = currentSheet;
+  const sheetNames = Object.keys(SHEETS);
+
+  sheetNames.forEach(function(name) {
+    SHEETS[name].forEach(function(record) {
+      // Fuzzy match: check if any text field contains the keyword
+      const searchTargets = [record.roomNo, record.tenant, record.brand, record.owner, record.ownerType, record.remark].join(' ').toLowerCase();
+      if (searchTargets.indexOf(keyword) >= 0) {
+        filteredRecords.push(record);
+        matchedSheet = name;
+      }
+    });
+  });
+
+  // Switch to the sheet that has matches
+  if (filteredRecords.length > 0 && matchedSheet !== currentSheet) {
+    currentSheet = matchedSheet;
+    renderTabs();
+  }
+
+  renderData(filteredRecords);
+
+  if (filteredRecords.length === 0) {
+    showToast('未找到匹配记录');
+  }
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  filteredRecords = [];
+  currentKeyword = '';
+  selectedIds.clear();
+}
+
+// ===== Render Data =====
+function renderData(records) {
+  currentRenderedRecords = records || [];
+  renderCards(records);
+  renderTable(records);
+  updateBottomBar();
+}
+
+function renderCards(records) {
+  const container = document.getElementById('dataCards');
+
+  if (records.length === 0) {
+    container.innerHTML =
+      '<div class="empty-state">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>' +
+        '<p>请输入关键词查询暖气费信息</p>' +
+      '</div>';
+    return;
+  }
+
+  let html = '';
+  records.forEach(function(record) {
+    const recSheet = record._sheet || currentSheet; // 跨表搜索时用记录所属表
+    const sKey = getStatusKey(recSheet, record.seq);
+    const isPaid = paymentStatus[sKey] === 'paid';
+    const statusClass = isPaid ? 'status-paid' : 'status-unpaid';
+    const statusText = isPaid ? '已缴费' : '未缴费';
+    const isSelected = selectedIds.has(record._id);
+
+    html += '<div class="data-card' + (isSelected ? ' selected' : '') + '">';
+    // Header - checkbox + brand & tenant + status
+    html += '<div class="data-card-header">';
+    html += '<span class="check-box data-card-check' + (isSelected ? ' checked' : '') + '" onclick="toggleSelect(\'' + record._id + '\')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>';
+    html += '<div class="data-card-main-info" onclick="toggleSelect(\'' + record._id + '\')">';
+    html += '<div class="data-card-brand">' + escHtml(record.brand || '-') + '</div>';
+    html += '<div class="data-card-tenant">' + escHtml(record.tenant || record.owner || '-') + '</div>';
+    html += '<div class="data-card-room">房号：' + escHtml(record.roomNo) + '</div>';
+    html += '</div>';
+    html += '<span class="data-card-status ' + statusClass + '" onclick="toggleStatus(\'' + recSheet + '\',' + record.seq + ')">' + statusText + '</span>';
+    html += '</div>';
+    // Body
+    html += '<div class="data-card-body">';
+    DISPLAY_FIELDS.forEach(function(field) {
+      if (CARD_HEADER_SKIP.indexOf(field.key) >= 0) return; // skip header fields
+      if (field.key === 'discount9' && !showDiscount) return; // 受9折开关控制
+      // 隐藏折扣时，合计显示折后价
+      var rawVal = record[field.key];
+      if (field.key === 'total' && !showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) {
+        rawVal = record.discount9;
+      }
+      const val = fmtValue(rawVal, field.type);
+      if (val === '-') return;
+      let valueClass = field.type === 'money' ? ' money' : (field.type === 'remark' && record[field.key] ? ' remark' : '');
+      if (field.key === 'discount9') valueClass += ' discount-val';
+      html += '<div class="card-field"><span class="card-field-label">' + field.label + '</span><span class="card-field-value' + valueClass + '">' + escHtml(val) + '</span></div>';
+    });
+    html += '</div>';
+    html += '</div>';
+  });
+
+  container.innerHTML = html;
+}
+
+function renderTable(records) {
+  const table = document.getElementById('dataTable');
+
+  if (records.length === 0) {
+    table.innerHTML = '';
+    return;
+  }
+
+  let html = '<thead><tr>';
+  html += '<th class="th-check">选</th>';
+  html += '<th>状态</th>';
+  DISPLAY_FIELDS.forEach(function(field) {
+    if (field.key === 'discount9' && !showDiscount) return; // 受9折开关控制
+    html += '<th>' + field.label + '</th>';
+  });
+  html += '</tr></thead><tbody>';
+
+  records.forEach(function(record) {
+    const recSheet = record._sheet || currentSheet; // 跨表搜索时用记录所属表
+    const sKey = getStatusKey(recSheet, record.seq);
+    const isPaid = paymentStatus[sKey] === 'paid';
+    const statusClass = isPaid ? 'status-paid' : 'status-unpaid';
+    const statusText = isPaid ? '已缴费' : '未缴费';
+    const isSelected = selectedIds.has(record._id);
+
+    html += '<tr' + (isSelected ? ' class="selected"' : '') + '>';
+    html += '<td class="td-check"><span class="check-box' + (isSelected ? ' checked' : '') + '" onclick="toggleSelect(\'' + record._id + '\')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></td>';
+    html += '<td><span class="status-badge ' + statusClass + '" onclick="toggleStatus(\'' + recSheet + '\',' + record.seq + ')">' + statusText + '</span></td>';
+    DISPLAY_FIELDS.forEach(function(field) {
+      if (field.key === 'discount9' && !showDiscount) return; // 受9折开关控制
+      // 隐藏折扣时，合计显示折后价
+      var rawVal = record[field.key];
+      if (field.key === 'total' && !showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) {
+        rawVal = record.discount9;
+      }
+      const val = fmtValue(rawVal, field.type);
+      const cls = field.type === 'money' ? ' class="td-money"' : '';
+      html += '<td' + cls + '>' + escHtml(val) + '</td>';
+    });
+    html += '</tr>';
+  });
+
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ===== Toggle Payment Status =====
+function toggleStatus(sheetName, seq) {
+  const key = getStatusKey(sheetName, seq);
+  if (paymentStatus[key] === 'paid') {
+    delete paymentStatus[key];
+  } else {
+    paymentStatus[key] = 'paid';
+  }
+  savePaymentStatus();
+  renderStats();
+
+  // Re-render current view
+  if (filteredRecords.length > 0) {
+    renderData(filteredRecords);
+  } else {
+    renderData(SHEETS[currentSheet]);
+  }
+}
+
+// ===== Toggle Discount (9折) Visibility =====
+function toggleDiscount() {
+  showDiscount = !showDiscount;
+  // 持久化到 localStorage，刷新后保持状态
+  try { localStorage.setItem('heating_show_discount', showDiscount ? '1' : '0'); } catch(e) {}
+  // 更新顶部按钮文字
+  const tEl = document.getElementById('discountToggleText');
+  if (tEl) tEl.textContent = showDiscount ? '隐藏折扣' : '显示折扣';
+  if (filteredRecords.length > 0) {
+    renderData(filteredRecords);
+  } else {
+    renderData(SHEETS[currentSheet]);
+  }
+  showToast(showDiscount ? '已显示9折优惠' : '已隐藏9折优惠');
+}
+
+// ===== Cart-style Multi-Select =====
+function toggleSelect(id) {
+  if (selectedIds.has(id)) selectedIds.delete(id);
+  else selectedIds.add(id);
+  // 局部刷新当前列表的勾选状态与底部栏
+  if (filteredRecords.length > 0) renderData(filteredRecords);
+  else renderData(SHEETS[currentSheet]);
+}
+
+function toggleSelectAll() {
+  const allSelected = currentRenderedRecords.length > 0 && currentRenderedRecords.every(function(r) { return selectedIds.has(r._id); });
+  if (allSelected) {
+    currentRenderedRecords.forEach(function(r) { selectedIds.delete(r._id); });
+  } else {
+    currentRenderedRecords.forEach(function(r) { selectedIds.add(r._id); });
+  }
+  if (filteredRecords.length > 0) renderData(filteredRecords);
+  else renderData(SHEETS[currentSheet]);
+}
+
+function getSelectedItems() {
+  const items = [];
+  // 按 currentRenderedRecords 顺序，保证导出顺序与列表一致
+  currentRenderedRecords.forEach(function(r) {
+    if (selectedIds.has(r._id)) items.push({ record: r, sheetName: r._sheet || currentSheet });
+  });
+  return items;
+}
+
+function updateBottomBar() {
+  const bar = document.getElementById('bottomBar');
+  const items = getSelectedItems();
+  const count = items.length;
+  let total = 0;
+  items.forEach(function(it) {
+    // 隐藏折扣时，合计用折后价
+    if (!showDiscount && it.record.discount9 !== '' && it.record.discount9 !== null && it.record.discount9 !== undefined) {
+      total += Number(it.record.discount9) || 0;
+    } else {
+      total += Number(it.record.total) || 0;
+    }
+  });
+
+  if (currentRenderedRecords.length === 0) {
+    bar.classList.remove('show');
+    return;
+  }
+  bar.classList.add('show');
+
+  // 全选框状态
+  const allBox = document.getElementById('bbSelectAllBox');
+  const allSelected = count > 0 && count === currentRenderedRecords.length;
+  if (allSelected) allBox.classList.add('checked'); else allBox.classList.remove('checked');
+
+  // 摘要
+  const summary = document.getElementById('bbSummary');
+  if (count === 0) {
+    summary.innerHTML = '请选择要导出的房间（共 ' + currentRenderedRecords.length + ' 间）';
+  } else {
+    summary.innerHTML = '已选 <span class="bb-count">' + count + '</span> 间房·合计 <span class="bb-total">' + fmtMoney(total) + ' 元</span>';
+  }
+
+  // 导出按钮
+  const btn = document.getElementById('bbExportBtn');
+  if (count === 0) {
+    btn.classList.remove('active');
+    btn.textContent = '导出图片';
+  } else {
+    btn.classList.add('active');
+    btn.textContent = '导出图片(' + count + ')';
+  }
+}
+
+// 导出当前选中的记录（合并为一张图片）
+async function exportSelected() {
+  const items = getSelectedItems();
+  if (items.length === 0) { showToast('请先选择要导出的房间'); return; }
+
+  if (typeof html2canvas === 'undefined') {
+    showToast('图片组件加载失败，请检查网络后刷新');
+    return;
+  }
+
+  showToast('正在生成图片...');
+
+  const receipt = document.getElementById('exportReceipt');
+  let fileName;
+  if (items.length === 1) {
+    const r = items[0].record;
+    receipt.innerHTML = buildReceiptHTML(r, items[0].sheetName);
+    fileName = '暖气费_' + r.roomNo + '_' + (r.tenant || r.owner) + '.jpg';
+  } else {
+    const subtitle = currentKeyword ? ('查询：' + currentKeyword + '（已选 ' + items.length + ' 间房）') : ('已选 ' + items.length + ' 间房');
+    receipt.innerHTML = buildGroupReceiptHTML(subtitle, items);
+    fileName = '暖气费_已选' + items.length + '间房.jpg';
+  }
+
+  try {
+    const canvas = await html2canvas(receipt, {
+      scale: 3,
+      backgroundColor: '#FFFFFF',
+      useCORS: true,
+      logging: false
+    });
+
+    canvas.toBlob(function(blob) {
+      if (!blob) { showToast('图片生成失败'); return; }
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 1500);
+      showToast('已导出' + items.length + '间房费用明细');
+    }, 'image/jpeg', 0.95);
+  } catch (e) {
+    console.error('JPG export error:', e);
+    showToast('图片生成失败，请重试');
+  }
+}
+
+// ===== Export Receipt Template =====
+
+// Shared: render the "other fields" (areas/owner/fees/discount/remark) for one record.
+// 受 showDiscount 控制：9折字段随开关显示/隐藏。
+function buildRecordDetailFields(record) {
+  let html = '';
+  DISPLAY_FIELDS.forEach(function(field) {
+    if (['roomNo', 'brand', 'tenant'].indexOf(field.key) >= 0) return; // already shown above
+    if (field.key === 'discount9' && !showDiscount) return; // 受9折开关控制，导出图片同步
+    // 隐藏折扣时，合计显示折后价（discount9），让客户只看到应缴金额
+    var rawVal = record[field.key];
+    if (field.key === 'total' && !showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) {
+      rawVal = record.discount9;
+    }
+    const val = fmtValue(rawVal, field.type);
+    if (val === '-' && field.key !== 'remark') return;
+    if (field.key === 'remark' && !record[field.key]) return;
+    let valueClass = 'export-field-value';
+    if (field.type === 'money') valueClass += ' money';
+    if (field.type === 'remark' && record[field.key]) valueClass += ' remark-val';
+    let valueStyle = '';
+    if (field.key === 'discount9') valueStyle = ' style="color:#D97706"';
+    html += '<div class="export-field-row">';
+    html += '<div class="export-field-label">' + field.label + '</div>';
+    html += '<div class="' + valueClass + '"' + valueStyle + '>' + escHtml(val) + '</div>';
+    html += '</div>';
+  });
+  return html;
+}
+
+// 单条记录的缴费通知单（租户名下仅1间房时使用）
+function buildReceiptHTML(record, sheetName) {
+  const sKey = getStatusKey(sheetName, record.seq);
+  const isPaid = paymentStatus[sKey] === 'paid';
+  const statusText = isPaid ? '已缴费' : '未缴费';
+  const statusColor = isPaid ? '#16A34A' : '#DC2626';
+  const sheetTitle = sheetName === '自有面积' ? '商场自有面积' : '小业主面积';
+
+  let html = '';
+  html += '<div class="export-receipt-title">2026年度暖气费缴费通知单</div>';
+  html += '<div class="export-receipt-subtitle">（' + escHtml(sheetTitle) + '）</div>';
+  html += '<hr class="export-receipt-divider">';
+
+  // Key info first (brand, tenant, roomNo)
+  html += '<div class="export-field-row">';
+  html += '<div class="export-field-label">经营品牌</div>';
+  html += '<div class="export-field-value" style="font-weight:700;font-size:16px;color:#1E293B">' + escHtml(record.brand || '-') + '</div>';
+  html += '</div>';
+
+  html += '<div class="export-field-row">';
+  html += '<div class="export-field-label">租户姓名</div>';
+  html += '<div class="export-field-value" style="font-weight:600;font-size:15px;color:#334155">' + escHtml(record.tenant || record.owner || '-') + '</div>';
+  html += '</div>';
+
+  html += '<div class="export-field-row">';
+  html += '<div class="export-field-label">房号</div>';
+  html += '<div class="export-field-value" style="color:#64748B">' + escHtml(record.roomNo) + '</div>';
+  html += '</div>';
+
+  // Other fields
+  html += buildRecordDetailFields(record);
+
+  // Payment status
+  html += '<div class="export-field-row">';
+  html += '<div class="export-field-label">缴费状态</div>';
+  html += '<div class="export-field-value" style="color:' + statusColor + ';font-weight:600">' + statusText + '</div>';
+  html += '</div>';
+
+  html += '<hr class="export-receipt-divider">';
+  html += '<div class="export-stamp">打印时间：' + new Date().toLocaleString('zh-CN') + '</div>';
+
+  return html;
+}
+
+// 查找某租户名下所有房间的记录（跨全部 sheet）
+function findTenantRecords(tenantName) {
+  const results = [];
+  if (!tenantName || tenantName === '/' || tenantName === '-') return results;
+  Object.keys(SHEETS).forEach(function(name) {
+    SHEETS[name].forEach(function(record) {
+      if (record.tenant === tenantName) {
+        results.push({ record: record, sheetName: name });
+      }
+    });
+  });
+  return results;
+}
+
+// 通用分组导出：任意一组记录（可跨租户、跨表），支持搜索结果整体导出
+function buildGroupReceiptHTML(subtitle, items) {
+  let html = '';
+  html += '<div class="export-receipt-title">2026年度暖气费缴费通知单</div>';
+  html += '<div class="export-receipt-subtitle">' + escHtml(subtitle) + '</div>';
+  html += '<hr class="export-receipt-divider">';
+
+  let totalSum = 0;
+  let discountSum = 0;
+
+  items.forEach(function(item, idx) {
+    const record = item.record;
+    const sheetName = item.sheetName;
+    const sheetTitle = sheetName === '自有面积' ? '商场自有面积' : '小业主面积';
+    const sKey = getStatusKey(sheetName, record.seq);
+    const isPaid = paymentStatus[sKey] === 'paid';
+    const statusText = isPaid ? '已缴费' : '未缴费';
+    const statusColor = isPaid ? '#16A34A' : '#DC2626';
+
+    html += '<div class="export-room-header">房间 ' + (idx + 1) + ' / ' + items.length + '：' + escHtml(record.roomNo) + '（' + escHtml(sheetTitle) + '）</div>';
+
+    html += '<div class="export-field-row">';
+    html += '<div class="export-field-label">经营品牌</div>';
+    html += '<div class="export-field-value" style="font-weight:700;font-size:16px;color:#1E293B">' + escHtml(record.brand || '-') + '</div>';
+    html += '</div>';
+
+    html += '<div class="export-field-row">';
+    html += '<div class="export-field-label">租户姓名</div>';
+    html += '<div class="export-field-value" style="font-weight:600;font-size:15px;color:#334155">' + escHtml(record.tenant || record.owner || '-') + '</div>';
+    html += '</div>';
+
+    html += '<div class="export-field-row">';
+    html += '<div class="export-field-label">房号</div>';
+    html += '<div class="export-field-value" style="color:#64748B">' + escHtml(record.roomNo) + '</div>';
+    html += '</div>';
+
+    html += buildRecordDetailFields(record);
+
+    html += '<div class="export-field-row">';
+    html += '<div class="export-field-label">缴费状态</div>';
+    html += '<div class="export-field-value" style="color:' + statusColor + ';font-weight:600">' + statusText + '</div>';
+    html += '</div>';
+
+    if (record.total !== '' && record.total !== null && record.total !== undefined) {
+      // 隐藏折扣时，合计汇总用折后价
+      if (!showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) {
+        totalSum += Number(record.discount9);
+      } else {
+        totalSum += Number(record.total);
+      }
+    }
+    if (showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) discountSum += Number(record.discount9);
+
+    html += '<hr class="export-room-divider">';
+  });
+
+  // 费用汇总
+  html += '<div class="export-summary">';
+  html += '<div class="export-summary-title">费用汇总（共 ' + items.length + ' 间房）</div>';
+  html += '<div class="export-field-row">';
+  html += '<div class="export-field-label">合计费用</div>';
+  html += '<div class="export-field-value money" style="color:#DC2626;font-size:17px">' + fmtMoney(totalSum) + ' 元</div>';
+  html += '</div>';
+  if (showDiscount) {
+    html += '<div class="export-field-row">';
+    html += '<div class="export-field-label">9折优惠合计</div>';
+    html += '<div class="export-field-value money" style="color:#D97706;font-size:17px">' + fmtMoney(discountSum) + ' 元</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  html += '<div class="export-stamp">打印时间：' + new Date().toLocaleString('zh-CN') + '</div>';
+  return html;
+}
+
+// 同一租户名下所有房间的合并通知单
+function buildTenantReceiptHTML(tenantName, items) {
+  return buildGroupReceiptHTML('租户：' + tenantName + '（共 ' + items.length + ' 间房）', items);
+}
+
+// ===== Init =====
+function init() {
+  renderStats();
+  renderTabs();
+  // Sync discount toggle button text with loaded state
+  const tEl = document.getElementById('discountToggleText');
+  if (tEl) tEl.textContent = showDiscount ? '隐藏折扣' : '显示折扣';
+  // Show current sheet's full list on load
+  renderData(SHEETS[currentSheet]);
+
+  // Search events
+  document.getElementById('searchBtn').addEventListener('click', doSearch);
+  document.getElementById('searchInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      doSearch();
+      this.blur(); // dismiss mobile keyboard
+    }
+  });
+
+  // Dismiss keyboard on tap outside input
+  document.addEventListener('click', function(e) {
+    const input = document.getElementById('searchInput');
+    if (e.target !== input && !input.contains(e.target) && e.target.id !== 'searchBtn') {
+      input.blur();
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+
+<div id="html-editor-renderer-root" style="position: fixed; top: 0px; left: 0px;"></div></body></html>

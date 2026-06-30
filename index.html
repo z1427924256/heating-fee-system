@@ -3,8 +3,8 @@
 <html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="商场暖气费查询导出系统">
-  <title>商场暖气费查询导出系统</title>
+  <meta name="description" content="新华能店商场暖气费查询系统">
+  <title>新华能店商场暖气费查询系统</title>
   <!-- html2canvas for image export (CDN, fixes "保存图片失败") -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
@@ -688,8 +688,8 @@
   <div class="app-container">
     <!-- Header -->
     <header class="app-header">
-      <h1>商场暖气费查询导出系统</h1>
-      <p>2026年度暖气费台账查询与单据导出</p>
+      <h1>新华能店商场暖气费查询系统</h1>
+      <p>2025-2026年度暖气费台账查询与费用明细</p>
     </header>
 
     <!-- Stats -->
@@ -740,62 +740,62 @@
 // ===== Hardcoded Data =====
 const SHEETS = {
   '小业主面积': [
-    {seq:1,roomNo:"101/201",surveyArea:987.94,shutterArea:0,finalArea:987.94,owner:"银行",ownerType:"业主自行出租",tenant:"银行",brand:"银行",fee2025:20746.74,fee2026:20746.74,total:41493.48,discount9:37344.132,remark:""},
-    {seq:2,roomNo:"104",surveyArea:245.32,shutterArea:0,finalArea:245.32,owner:"王新海",ownerType:"业主自行出租",tenant:"胡辉",brand:"海信",fee2025:5151.72,fee2026:5151.72,total:10303.44,discount9:9273.096,remark:""},
-    {seq:3,roomNo:"105",surveyArea:245.32,shutterArea:13.64711885,finalArea:231.67288115,owner:"胡志玲",ownerType:"业主自行出租",tenant:"杨永畅",brand:"海尔",fee2025:4865.13050415,fee2026:4865.13050415,total:9730.2610083,discount9:8757.23490747,remark:""},
-    {seq:4,roomNo:"106",surveyArea:256.33,shutterArea:0,finalArea:256.33,owner:"顿昕",ownerType:"业主自行出租",tenant:"罗杰",brand:"TCL",fee2025:5382.93,fee2026:5382.93,total:10765.86,discount9:9689.274,remark:""},
-    {seq:5,roomNo:"107",surveyArea:266.11,shutterArea:0,finalArea:266.11,owner:"王敬明",ownerType:"业主自行出租",tenant:"胡致炜",brand:"长虹",fee2025:5588.31,fee2026:5588.31,total:11176.62,discount9:10058.958,remark:""},
-    {seq:6,roomNo:"108",surveyArea:245.32,shutterArea:13.64711885,finalArea:231.67288115,owner:"汪灿金",ownerType:"业主自行出租",tenant:"张富胜",brand:"美的电采暖",fee2025:4865.13050415,fee2026:4865.13050415,total:9730.2610083,discount9:8757.23490747,remark:""},
-    {seq:7,roomNo:"110",surveyArea:245.12,shutterArea:0,finalArea:245.12,owner:"张少波",ownerType:"业主自行出租",tenant:"孔磊",brand:"格力",fee2025:5147.52,fee2026:5147.52,total:10295.04,discount9:9265.536,remark:""},
-    {seq:8,roomNo:"111",surveyArea:192.07,shutterArea:0,finalArea:192.07,owner:"苏小芳",ownerType:"业主自行出租",tenant:"伊力买买提",brand:"韩电电器",fee2025:806.694,fee2026:4033.47,total:4840.164,discount9:4356.1476,remark:"2月进场"},
-    {seq:9,roomNo:"112",surveyArea:243.94,shutterArea:0,finalArea:243.94,owner:"王新萍",ownerType:"业主自行出租",tenant:"王鹏",brand:"苏宁",fee2025:0,fee2026:5122.74,total:5122.74,discount9:4610.466,remark:""},
-    {seq:10,roomNo:"122",surveyArea:245.32,shutterArea:0,finalArea:245.32,owner:"王卫兵",ownerType:"业主自行出租",tenant:"张子俊",brand:"火星人",fee2025:5151.72,fee2026:5151.72,total:10303.44,discount9:9273.096,remark:""},
-    {seq:11,roomNo:"123",surveyArea:129.44,shutterArea:0,finalArea:129.44,owner:"朱时祥",ownerType:"业主自行出租",tenant:"张国凤",brand:"博世/安吉尔",fee2025:2174.592,fee2026:2718.24,total:4892.832,discount9:4403.5488,remark:"11月进场"},
-    {seq:12,roomNo:"124",surveyArea:245.68,shutterArea:0,finalArea:245.68,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:5159.28,fee2026:5159.28,total:10318.56,discount9:9286.704,remark:""},
-    {seq:13,roomNo:"125",surveyArea:245.32,shutterArea:0,finalArea:245.32,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:5151.72,fee2026:5151.72,total:10303.44,discount9:9273.096,remark:""},
-    {seq:14,roomNo:"126",surveyArea:239.92,shutterArea:0,finalArea:239.92,owner:"王新海",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:5038.32,fee2026:5038.32,total:10076.64,discount9:9068.976,remark:""},
-    {seq:15,roomNo:"127",surveyArea:50.41,shutterArea:0,finalArea:50.41,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:1058.61,fee2026:1058.61,total:2117.22,discount9:1905.498,remark:""},
-    {seq:16,roomNo:"128",surveyArea:66.39,shutterArea:0,finalArea:66.39,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1394.19,fee2026:1394.19,total:2788.38,discount9:2509.542,remark:""},
-    {seq:17,roomNo:"129",surveyArea:66.39,shutterArea:0,finalArea:66.39,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1394.19,fee2026:1394.19,total:2788.38,discount9:2509.542,remark:""},
-    {seq:18,roomNo:"130",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1045.59,fee2026:1045.59,total:2091.18,discount9:1882.062,remark:""},
-    {seq:19,roomNo:"131",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1045.59,fee2026:1045.59,total:2091.18,discount9:1882.062,remark:""},
-    {seq:20,roomNo:"137",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"杨秋霞",ownerType:"业主自行出租",tenant:"李涛",brand:"汉斯顿净水",fee2025:1045.59,fee2026:1045.59,total:2091.18,discount9:1882.062,remark:""},
-    {seq:21,roomNo:"144",surveyArea:50.41,shutterArea:0,finalArea:50.41,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:1058.61,fee2026:1058.61,total:2117.22,discount9:1905.498,remark:""},
-    {seq:22,roomNo:"151",surveyArea:44.31,shutterArea:4.4260926,finalArea:39.8839074,owner:"陈其满",ownerType:"业主自行出租",tenant:"汤汉飞",brand:"美的智慧厨房",fee2025:837.5620554,fee2026:837.5620554,total:1675.1241108,discount9:1507.61169972,remark:""},
-    {seq:23,roomNo:"163",surveyArea:46.47,shutterArea:0,finalArea:46.47,owner:"刘功莲",ownerType:"业主自行出租",tenant:"潘文锐",brand:"万和",fee2025:975.87,fee2026:975.87,total:1951.74,discount9:1756.566,remark:""},
-    {seq:24,roomNo:"183",surveyArea:46.52,shutterArea:0,finalArea:46.52,owner:"朱琳",ownerType:"业主自行出租",tenant:"严合群",brand:"奥克斯",fee2025:976.92,fee2026:976.92,total:1953.84,discount9:1758.456,remark:""},
-    {seq:25,roomNo:"194",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"郭萍",ownerType:"业主自营",tenant:"郭萍",brand:"苏宁易购",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""},
-    {seq:26,roomNo:"195",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"郭萍",ownerType:"业主自营",tenant:"郭萍",brand:"苏宁易购",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""},
-    {seq:27,roomNo:"196",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"郭君",ownerType:"业主自营",tenant:"郭萍",brand:"苏宁易购",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""},
-    {seq:28,roomNo:"1112",surveyArea:55.33,shutterArea:0,finalArea:55.33,owner:"陈登社",ownerType:"业主自行出租",tenant:"候保玉",brand:"天猫",fee2025:1161.93,fee2026:1161.93,total:2323.86,discount9:2091.474,remark:""},
-    {seq:29,roomNo:"1114",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"陈登社",ownerType:"业主自行出租",tenant:"候保玉",brand:"天猫",fee2025:1045.59,fee2026:1045.59,total:2091.18,discount9:1882.062,remark:""},
-    {seq:30,roomNo:"1125",surveyArea:129.44,shutterArea:0,finalArea:129.44,owner:"尹艺璇",ownerType:"业主自营",tenant:"/",brand:"菲斯曼",fee2025:2718.24,fee2026:2718.24,total:5436.48,discount9:4892.832,remark:""},
-    {seq:31,roomNo:"158",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"赵银川",ownerType:"业主自营",tenant:"赵银川",brand:"百得",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""},
-    {seq:32,roomNo:"159",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"赵银川",ownerType:"业主自营",tenant:"赵银川",brand:"百得",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,discount9:2133.07027479,remark:""}
+    {seq:1,roomNo:"101/201",surveyArea:987.94,shutterArea:0,finalArea:987.94,owner:"银行",ownerType:"业主自行出租",tenant:"银行",brand:"银行",fee2025:20746.74,fee2026:20746.74,total:41493.48,remark:""},
+    {seq:2,roomNo:"104",surveyArea:245.32,shutterArea:0,finalArea:245.32,owner:"王新海",ownerType:"业主自行出租",tenant:"胡辉",brand:"海信",fee2025:5151.72,fee2026:5151.72,total:10303.44,remark:""},
+    {seq:3,roomNo:"105",surveyArea:245.32,shutterArea:13.64711885,finalArea:231.67288115,owner:"胡志玲",ownerType:"业主自行出租",tenant:"杨永畅",brand:"海尔",fee2025:4865.13050415,fee2026:4865.13050415,total:9730.2610083,remark:""},
+    {seq:4,roomNo:"106",surveyArea:256.33,shutterArea:0,finalArea:256.33,owner:"顿昕",ownerType:"业主自行出租",tenant:"罗杰",brand:"TCL",fee2025:5382.93,fee2026:5382.93,total:10765.86,remark:""},
+    {seq:5,roomNo:"107",surveyArea:266.11,shutterArea:0,finalArea:266.11,owner:"王敬明",ownerType:"业主自行出租",tenant:"胡致炜",brand:"长虹",fee2025:5588.31,fee2026:5588.31,total:11176.62,remark:""},
+    {seq:6,roomNo:"108",surveyArea:245.32,shutterArea:13.64711885,finalArea:231.67288115,owner:"汪灿金",ownerType:"业主自行出租",tenant:"张富胜",brand:"美的电采暖",fee2025:4865.13050415,fee2026:4865.13050415,total:9730.2610083,remark:""},
+    {seq:7,roomNo:"110",surveyArea:245.12,shutterArea:0,finalArea:245.12,owner:"张少波",ownerType:"业主自行出租",tenant:"孔磊",brand:"格力",fee2025:5147.52,fee2026:5147.52,total:10295.04,remark:""},
+    {seq:8,roomNo:"111",surveyArea:192.07,shutterArea:0,finalArea:192.07,owner:"苏小芳",ownerType:"业主自行出租",tenant:"伊力买买提",brand:"韩电电器",fee2025:806.694,fee2026:4033.47,total:4840.164,remark:"2月进场"},
+    {seq:9,roomNo:"112",surveyArea:243.94,shutterArea:0,finalArea:243.94,owner:"王新萍",ownerType:"业主自行出租",tenant:"王鹏",brand:"苏宁",fee2025:0,fee2026:5122.74,total:5122.74,remark:""},
+    {seq:10,roomNo:"122",surveyArea:245.32,shutterArea:0,finalArea:245.32,owner:"王卫兵",ownerType:"业主自行出租",tenant:"张子俊",brand:"火星人",fee2025:5151.72,fee2026:5151.72,total:10303.44,remark:""},
+    {seq:11,roomNo:"123",surveyArea:129.44,shutterArea:0,finalArea:129.44,owner:"朱时祥",ownerType:"业主自行出租",tenant:"张国凤",brand:"博世/安吉尔",fee2025:2174.592,fee2026:2718.24,total:4892.832,remark:"11月进场"},
+    {seq:12,roomNo:"124",surveyArea:245.68,shutterArea:0,finalArea:245.68,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:5159.28,fee2026:5159.28,total:10318.56,remark:""},
+    {seq:13,roomNo:"125",surveyArea:245.32,shutterArea:0,finalArea:245.32,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:5151.72,fee2026:5151.72,total:10303.44,remark:""},
+    {seq:14,roomNo:"126",surveyArea:239.92,shutterArea:0,finalArea:239.92,owner:"王新海",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:5038.32,fee2026:5038.32,total:10076.64,remark:""},
+    {seq:15,roomNo:"127",surveyArea:50.41,shutterArea:0,finalArea:50.41,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:1058.61,fee2026:1058.61,total:2117.22,remark:""},
+    {seq:16,roomNo:"128",surveyArea:66.39,shutterArea:0,finalArea:66.39,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1394.19,fee2026:1394.19,total:2788.38,remark:""},
+    {seq:17,roomNo:"129",surveyArea:66.39,shutterArea:0,finalArea:66.39,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1394.19,fee2026:1394.19,total:2788.38,remark:""},
+    {seq:18,roomNo:"130",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1045.59,fee2026:1045.59,total:2091.18,remark:""},
+    {seq:19,roomNo:"131",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"林金彪",ownerType:"业主自行出租",tenant:"杨永畅",brand:"创维",fee2025:1045.59,fee2026:1045.59,total:2091.18,remark:""},
+    {seq:20,roomNo:"137",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"杨秋霞",ownerType:"业主自行出租",tenant:"李涛",brand:"汉斯顿净水",fee2025:1045.59,fee2026:1045.59,total:2091.18,remark:""},
+    {seq:21,roomNo:"144",surveyArea:50.41,shutterArea:0,finalArea:50.41,owner:"丁运前",ownerType:"业主自行出租",tenant:"吴熙伦",brand:"海尔",fee2025:1058.61,fee2026:1058.61,total:2117.22,remark:""},
+    {seq:22,roomNo:"151",surveyArea:44.31,shutterArea:4.4260926,finalArea:39.8839074,owner:"陈其满",ownerType:"业主自行出租",tenant:"汤汉飞",brand:"美的智慧厨房",fee2025:837.5620554,fee2026:837.5620554,total:1675.1241108,remark:""},
+    {seq:23,roomNo:"163",surveyArea:46.47,shutterArea:0,finalArea:46.47,owner:"刘功莲",ownerType:"业主自行出租",tenant:"潘文锐",brand:"万和",fee2025:975.87,fee2026:975.87,total:1951.74,remark:""},
+    {seq:24,roomNo:"183",surveyArea:46.52,shutterArea:0,finalArea:46.52,owner:"朱琳",ownerType:"业主自行出租",tenant:"严合群",brand:"奥克斯",fee2025:976.92,fee2026:976.92,total:1953.84,remark:""},
+    {seq:25,roomNo:"194",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"郭萍",ownerType:"业主自营",tenant:"郭萍",brand:"苏宁易购",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,remark:""},
+    {seq:26,roomNo:"195",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"郭萍",ownerType:"业主自营",tenant:"郭萍",brand:"苏宁易购",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,remark:""},
+    {seq:27,roomNo:"196",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"郭君",ownerType:"业主自营",tenant:"郭萍",brand:"苏宁易购",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,remark:""},
+    {seq:28,roomNo:"1112",surveyArea:55.33,shutterArea:0,finalArea:55.33,owner:"陈登社",ownerType:"业主自行出租",tenant:"候保玉",brand:"天猫",fee2025:1161.93,fee2026:1161.93,total:2323.86,remark:""},
+    {seq:29,roomNo:"1114",surveyArea:49.79,shutterArea:0,finalArea:49.79,owner:"陈登社",ownerType:"业主自行出租",tenant:"候保玉",brand:"天猫",fee2025:1045.59,fee2026:1045.59,total:2091.18,remark:""},
+    {seq:30,roomNo:"1125",surveyArea:129.44,shutterArea:0,finalArea:129.44,owner:"尹艺璇",ownerType:"业主自营",tenant:"/",brand:"菲斯曼",fee2025:2718.24,fee2026:2718.24,total:5436.48,remark:""},
+    {seq:31,roomNo:"158",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"赵银川",ownerType:"业主自营",tenant:"赵银川",brand:"百得",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,remark:""},
+    {seq:32,roomNo:"159",surveyArea:59.75,shutterArea:3.31956945,finalArea:56.43043055,owner:"赵银川",ownerType:"业主自营",tenant:"赵银川",brand:"百得",fee2025:1185.03904155,fee2026:1185.03904155,total:2370.0780831,remark:""}
   ],
   '自有面积': [
-    {seq:1,roomNo:"HN-1-1-03",surveyArea:'',shutterArea:'',finalArea:121.3,owner:"新华能",ownerType:"商场自有",tenant:"胡辉",brand:"美的厨电",fee2025:2929.395,fee2026:2929.395,total:5858.79,discount9:5272.911,remark:""},
-    {seq:2,roomNo:"HN-1-1-06/1",surveyArea:'',shutterArea:'',finalArea:160.08,owner:"新华能",ownerType:"商场自有",tenant:"李源峰",brand:"美的COLMO",fee2025:3865.932,fee2026:3865.932,total:7732,discount9:6958,remark:""},
-    {seq:3,roomNo:"HN-1-1-06/2",surveyArea:'',shutterArea:'',finalArea:162.98,owner:"新华能",ownerType:"商场自有",tenant:"李源峰",brand:"美的COLMO",fee2025:3935.967,fee2026:3935.967,total:7872,discount9:7084,remark:""},
-    {seq:4,roomNo:"HN-1-1-06/3",surveyArea:'',shutterArea:'',finalArea:162.43,owner:"新华能",ownerType:"商场自有",tenant:"李源峰",brand:"美的COLMO",fee2025:3922.6845,fee2026:3922.6845,total:7846,discount9:7061,remark:""},
-    {seq:5,roomNo:"HN-1-1-08",surveyArea:'',shutterArea:'',finalArea:200.87,owner:"新华能",ownerType:"商场自有",tenant:"侯宝玉",brand:"天猫优品",fee2025:4851.0105,fee2026:4851.0105,total:9702.021,discount9:8731.8189,remark:""},
-    {seq:6,roomNo:"HN-1-1-09",surveyArea:'',shutterArea:'',finalArea:341.7,owner:"新华能",ownerType:"商场自有",tenant:"凤潇",brand:"拓森",fee2025:0,fee2026:0,total:8252.055,discount9:7426.8495,remark:"未营业"},
-    {seq:7,roomNo:"HN-1-1-10",surveyArea:'',shutterArea:'',finalArea:630.19,owner:"新华能",ownerType:"商场自有",tenant:"张泽",brand:"京东家电",fee2025:15219.0885,fee2026:15219.0885,total:30438.177,discount9:27394.3593,remark:""},
-    {seq:8,roomNo:"HN-1-1-11",surveyArea:'',shutterArea:'',finalArea:232.15,owner:"新华能",ownerType:"商场自有",tenant:"侯宝玉",brand:"天猫优品",fee2025:5606.4225,fee2026:5606.4225,total:11212.845,discount9:10091.5605,remark:""},
-    {seq:9,roomNo:"HN-1-1-12",surveyArea:'',shutterArea:'',finalArea:445.63,owner:"新华能",ownerType:"商场自有",tenant:"胡辉",brand:"TCL、美的",fee2025:10761.9645,fee2026:10761.9645,total:21523.929,discount9:19371.5361,remark:""},
-    {seq:10,roomNo:"HN-1-1-15",surveyArea:'',shutterArea:'',finalArea:167.88,owner:"新华能",ownerType:"商场自有",tenant:"严合群",brand:"三星/奥克斯",fee2025:4054.302,fee2026:4054.302,total:8108.604,discount9:7297.7436,remark:""},
-    {seq:11,roomNo:"HN-1-1-16",surveyArea:'',shutterArea:'',finalArea:114.48,owner:"新华能",ownerType:"商场自有",tenant:"薛文硕",brand:"万家乐厨电",fee2025:2764.692,fee2026:2764.692,total:5529.384,discount9:4976.4456,remark:""},
-    {seq:12,roomNo:"HN-1-1-17",surveyArea:'',shutterArea:'',finalArea:103.94,owner:"新华能",ownerType:"商场自有",tenant:"汤汉飞",brand:"美的厨电",fee2025:2510.151,fee2026:2510.151,total:5020.302,discount9:4518.2718,remark:""},
-    {seq:13,roomNo:"HN-1-1-18",surveyArea:'',shutterArea:'',finalArea:303,owner:"新华能",ownerType:"商场自有",tenant:"刘旭",brand:"方太",fee2025:7317.45,fee2026:7317.45,total:14634.9,discount9:13171.41,remark:""},
-    {seq:14,roomNo:"HN-1-1-19",surveyArea:'',shutterArea:'',finalArea:169.5,owner:"新华能",ownerType:"商场自有",tenant:"程秀丽",brand:"华帝",fee2025:4093.425,fee2026:4093.425,total:8186.85,discount9:7368.165,remark:""},
-    {seq:15,roomNo:"HN-1-1-20",surveyArea:'',shutterArea:'',finalArea:82.9,owner:"新华能",ownerType:"商场自有",tenant:"赵银川",brand:"帅康",fee2025:2002.035,fee2026:2002.035,total:4004.07,discount9:3603.663,remark:""},
-    {seq:16,roomNo:"HN-1-1-21",surveyArea:'',shutterArea:'',finalArea:83.07,owner:"新华能",ownerType:"商场自有",tenant:"郭萍",brand:"苏宁",fee2025:2006.1405,fee2026:2006.1405,total:4012.281,discount9:3611.0529,remark:""},
-    {seq:17,roomNo:"HN-1-1-22",surveyArea:'',shutterArea:'',finalArea:360,owner:"新华能",ownerType:"商场自有",tenant:"张泽",brand:"京东家电",fee2025:8694,fee2026:8694,total:17388,discount9:15649.2,remark:""},
-    {seq:18,roomNo:"HN-1-1-23",surveyArea:'',shutterArea:'',finalArea:165.42,owner:"新华能",ownerType:"商场自有",tenant:"张泽",brand:"京东家电",fee2025:3994.893,fee2026:3994.893,total:7989.786,discount9:7190.8074,remark:""},
-    {seq:19,roomNo:"HN-1-1-26",surveyArea:'',shutterArea:'',finalArea:155.78,owner:"新华能",ownerType:"商场自有",tenant:"陈什崧",brand:"沁园",fee2025:3762.087,fee2026:3762.087,total:7524.174,discount9:6771.7566,remark:""},
-    {seq:20,roomNo:"HN-1-1-27",surveyArea:'',shutterArea:'',finalArea:125.27,owner:"新华能",ownerType:"商场自有",tenant:"潘文锐",brand:"老板",fee2025:3025.2705,fee2026:3025.2705,total:6050.541,discount9:5445.4869,remark:""},
-    {seq:21,roomNo:"HN-1-1-28",surveyArea:'',shutterArea:'',finalArea:165.6,owner:"新华能",ownerType:"商场自有",tenant:"胡辉",brand:"松下",fee2025:3999.24,fee2026:3999.24,total:7998.48,discount9:7198.632,remark:""},
-    {seq:22,roomNo:"HN-1-1-29",surveyArea:'',shutterArea:'',finalArea:65,owner:"新华能",ownerType:"商场自有",tenant:"李林鹏",brand:"威能",fee2025:1569.75,fee2026:1569.75,total:3139.5,discount9:2825.55,remark:""}
+    {seq:1,roomNo:"HN-1-1-03",surveyArea:'',shutterArea:'',finalArea:121.3,owner:"新华能",ownerType:"商场自有",tenant:"胡辉",brand:"美的厨电",fee2025:2929.395,fee2026:2929.395,total:5858.79,remark:""},
+    {seq:2,roomNo:"HN-1-1-06/1",surveyArea:'',shutterArea:'',finalArea:160.08,owner:"新华能",ownerType:"商场自有",tenant:"李源峰",brand:"美的COLMO",fee2025:3865.932,fee2026:3865.932,total:7732,remark:""},
+    {seq:3,roomNo:"HN-1-1-06/2",surveyArea:'',shutterArea:'',finalArea:162.98,owner:"新华能",ownerType:"商场自有",tenant:"李源峰",brand:"美的COLMO",fee2025:3935.967,fee2026:3935.967,total:7872,remark:""},
+    {seq:4,roomNo:"HN-1-1-06/3",surveyArea:'',shutterArea:'',finalArea:162.43,owner:"新华能",ownerType:"商场自有",tenant:"李源峰",brand:"美的COLMO",fee2025:3922.6845,fee2026:3922.6845,total:7846,remark:""},
+    {seq:5,roomNo:"HN-1-1-08",surveyArea:'',shutterArea:'',finalArea:200.87,owner:"新华能",ownerType:"商场自有",tenant:"侯宝玉",brand:"天猫优品",fee2025:4851.0105,fee2026:4851.0105,total:9702.021,remark:""},
+    {seq:6,roomNo:"HN-1-1-09",surveyArea:'',shutterArea:'',finalArea:341.7,owner:"新华能",ownerType:"商场自有",tenant:"凤潇",brand:"拓森",fee2025:0,fee2026:0,total:8252.055,remark:"未营业"},
+    {seq:7,roomNo:"HN-1-1-10",surveyArea:'',shutterArea:'',finalArea:630.19,owner:"新华能",ownerType:"商场自有",tenant:"张泽",brand:"京东家电",fee2025:15219.0885,fee2026:15219.0885,total:30438.177,remark:""},
+    {seq:8,roomNo:"HN-1-1-11",surveyArea:'',shutterArea:'',finalArea:232.15,owner:"新华能",ownerType:"商场自有",tenant:"侯宝玉",brand:"天猫优品",fee2025:5606.4225,fee2026:5606.4225,total:11212.845,remark:""},
+    {seq:9,roomNo:"HN-1-1-12",surveyArea:'',shutterArea:'',finalArea:445.63,owner:"新华能",ownerType:"商场自有",tenant:"胡辉",brand:"TCL、美的",fee2025:10761.9645,fee2026:10761.9645,total:21523.929,remark:""},
+    {seq:10,roomNo:"HN-1-1-15",surveyArea:'',shutterArea:'',finalArea:167.88,owner:"新华能",ownerType:"商场自有",tenant:"严合群",brand:"三星/奥克斯",fee2025:4054.302,fee2026:4054.302,total:8108.604,remark:""},
+    {seq:11,roomNo:"HN-1-1-16",surveyArea:'',shutterArea:'',finalArea:114.48,owner:"新华能",ownerType:"商场自有",tenant:"薛文硕",brand:"万家乐厨电",fee2025:2764.692,fee2026:2764.692,total:5529.384,remark:""},
+    {seq:12,roomNo:"HN-1-1-17",surveyArea:'',shutterArea:'',finalArea:103.94,owner:"新华能",ownerType:"商场自有",tenant:"汤汉飞",brand:"美的厨电",fee2025:2510.151,fee2026:2510.151,total:5020.302,remark:""},
+    {seq:13,roomNo:"HN-1-1-18",surveyArea:'',shutterArea:'',finalArea:303,owner:"新华能",ownerType:"商场自有",tenant:"刘旭",brand:"方太",fee2025:7317.45,fee2026:7317.45,total:14634.9,remark:""},
+    {seq:14,roomNo:"HN-1-1-19",surveyArea:'',shutterArea:'',finalArea:169.5,owner:"新华能",ownerType:"商场自有",tenant:"程秀丽",brand:"华帝",fee2025:4093.425,fee2026:4093.425,total:8186.85,remark:""},
+    {seq:15,roomNo:"HN-1-1-20",surveyArea:'',shutterArea:'',finalArea:82.9,owner:"新华能",ownerType:"商场自有",tenant:"赵银川",brand:"帅康",fee2025:2002.035,fee2026:2002.035,total:4004.07,remark:""},
+    {seq:16,roomNo:"HN-1-1-21",surveyArea:'',shutterArea:'',finalArea:83.07,owner:"新华能",ownerType:"商场自有",tenant:"郭萍",brand:"苏宁",fee2025:2006.1405,fee2026:2006.1405,total:4012.281,remark:""},
+    {seq:17,roomNo:"HN-1-1-22",surveyArea:'',shutterArea:'',finalArea:360,owner:"新华能",ownerType:"商场自有",tenant:"张泽",brand:"京东家电",fee2025:8694,fee2026:8694,total:17388,remark:""},
+    {seq:18,roomNo:"HN-1-1-23",surveyArea:'',shutterArea:'',finalArea:165.42,owner:"新华能",ownerType:"商场自有",tenant:"张泽",brand:"京东家电",fee2025:3994.893,fee2026:3994.893,total:7989.786,remark:""},
+    {seq:19,roomNo:"HN-1-1-26",surveyArea:'',shutterArea:'',finalArea:155.78,owner:"新华能",ownerType:"商场自有",tenant:"陈什崧",brand:"沁园",fee2025:3762.087,fee2026:3762.087,total:7524.174,remark:""},
+    {seq:20,roomNo:"HN-1-1-27",surveyArea:'',shutterArea:'',finalArea:125.27,owner:"新华能",ownerType:"商场自有",tenant:"潘文锐",brand:"老板",fee2025:3025.2705,fee2026:3025.2705,total:6050.541,remark:""},
+    {seq:21,roomNo:"HN-1-1-28",surveyArea:'',shutterArea:'',finalArea:165.6,owner:"新华能",ownerType:"商场自有",tenant:"胡辉",brand:"松下",fee2025:3999.24,fee2026:3999.24,total:7998.48,remark:""},
+    {seq:22,roomNo:"HN-1-1-29",surveyArea:'',shutterArea:'',finalArea:65,owner:"新华能",ownerType:"商场自有",tenant:"李林鹏",brand:"威能",fee2025:1569.75,fee2026:1569.75,total:3139.5,remark:""}
   ]
 };
 
@@ -1196,7 +1196,6 @@ async function exportSelected() {
 
 // ===== Export Receipt Template =====
 
-// Shared: render the "other fields" (areas/owner/fees/discount/remark) for one record.
 // Shared: render the "other fields" (areas/owner/fees/remark) for one record.
 function buildRecordDetailFields(record) {
   let html = '';
@@ -1225,7 +1224,7 @@ function buildReceiptHTML(record, sheetName) {
   const sheetTitle = sheetName === '自有面积' ? '商场自有面积' : '小业主面积';
 
   let html = '';
-  html += '<div class="export-receipt-title">2026年度暖气费缴费通知单</div>';
+  html += '<div class="export-receipt-title">2025-2026年度暖气费费用明细</div>';
   html += '<div class="export-receipt-subtitle">（' + escHtml(sheetTitle) + '）</div>';
   html += '<hr class="export-receipt-divider">';
 
@@ -1277,7 +1276,7 @@ function findTenantRecords(tenantName) {
 // 通用分组导出：任意一组记录（可跨租户、跨表），支持搜索结果整体导出
 function buildGroupReceiptHTML(subtitle, items) {
   let html = '';
-  html += '<div class="export-receipt-title">2026年度暖气费缴费通知单</div>';
+  html += '<div class="export-receipt-title">2025-2026年度暖气费费用明细</div>';
   html += '<div class="export-receipt-subtitle">' + escHtml(subtitle) + '</div>';
   html += '<hr class="export-receipt-divider">';
 

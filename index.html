@@ -358,20 +358,6 @@
       border-color: #06AD56;
       color: var(--white);
     }
-    .card-action-btn.btn-discount {
-      background: #F59E0B;
-      color: var(--white);
-      border-color: #F59E0B;
-    }
-    .card-action-btn.btn-discount:hover {
-      background: #D97706;
-      border-color: #D97706;
-      color: var(--white);
-    }
-    .card-field-value.discount-val {
-      color: #D97706;
-      font-weight: 600;
-    }
 
     /* ===== Checkbox (cart-style multi-select) ===== */
     .check-box {
@@ -419,25 +405,6 @@
     .data-table .td-check { width: 40px; text-align: center; }
     .data-table .th-check { width: 40px; text-align: center; }
 
-    /* ===== Top discount toggle ===== */
-    .discount-toggle-btn {
-      height: 44px;
-      padding: 0 14px;
-      border: 1px solid #F59E0B;
-      border-radius: 6px;
-      background: #FFFBEB;
-      color: #D97706;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-    .discount-toggle-btn:hover { background: #F59E0B; color: var(--white); }
-    .discount-toggle-btn svg { width: 16px; height: 16px; }
     .search-row { flex-wrap: wrap; }
 
     /* ===== Bottom action bar (cart-style) ===== */
@@ -553,11 +520,6 @@
       background: #07C160;
       color: var(--white);
       border-color: #07C160;
-    }
-    .data-table .td-action button.btn-discount {
-      background: #F59E0B;
-      color: var(--white);
-      border-color: #F59E0B;
     }
     .data-table .status-badge {
       display: inline-block;
@@ -738,10 +700,6 @@
       <div class="search-row">
         <input type="text" class="search-input" id="searchInput" placeholder="输入房号/商户名/品牌/户主搜索" inputmode="text">
         <button class="search-btn" id="searchBtn">查询</button>
-        <button class="discount-toggle-btn" id="discountToggleBtn" onclick="toggleDiscount()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          <span id="discountToggleText">隐藏折扣</span>
-        </button>
       </div>
       <div class="search-hint">支持模糊搜索，输入部分关键词即可查找</div>
     </section>
@@ -859,7 +817,6 @@ const DISPLAY_FIELDS = [
   { key: 'fee2025', label: '2025暖气费(元)', type: 'money' },
   { key: 'fee2026', label: '2026暖气费(元)', type: 'money' },
   { key: 'total', label: '合计(元)', type: 'money' },
-  { key: 'discount9', label: '9折优惠(元)', type: 'money' },
   { key: 'remark', label: '备注', type: 'remark' }
 ];
 
@@ -871,7 +828,6 @@ let currentSheet = Object.keys(SHEETS)[0];
 let filteredRecords = [];
 let currentKeyword = ''; // 当前搜索关键词，用于导出图片标题
 let paymentStatus = {};  // key: sheetName_seq, value: 'paid'|'unpaid'
-let showDiscount = true; // 9折优惠显示开关
 let selectedIds = new Set(); // 购物车式多选：选中的记录 _id 集合
 let currentRenderedRecords = []; // 当前列表渲染的记录，供全选/底部栏使用
 
@@ -879,12 +835,6 @@ let currentRenderedRecords = []; // 当前列表渲染的记录，供全选/底�
 try {
   const saved = localStorage.getItem('heating_payment_status');
   if (saved) paymentStatus = JSON.parse(saved);
-} catch(e) {}
-
-// Load discount visibility from localStorage (persists across reloads)
-try {
-  const savedDiscount = localStorage.getItem('heating_show_discount');
-  if (savedDiscount !== null) showDiscount = (savedDiscount === '1');
 } catch(e) {}
 
 function savePaymentStatus() {
@@ -1053,16 +1003,9 @@ function renderCards(records) {
     html += '<div class="data-card-body">';
     DISPLAY_FIELDS.forEach(function(field) {
       if (CARD_HEADER_SKIP.indexOf(field.key) >= 0) return; // skip header fields
-      if (field.key === 'discount9' && !showDiscount) return; // 受9折开关控制
-      // 隐藏折扣时，合计显示折后价
-      var rawVal = record[field.key];
-      if (field.key === 'total' && !showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) {
-        rawVal = record.discount9;
-      }
-      const val = fmtValue(rawVal, field.type);
+      const val = fmtValue(record[field.key], field.type);
       if (val === '-') return;
       let valueClass = field.type === 'money' ? ' money' : (field.type === 'remark' && record[field.key] ? ' remark' : '');
-      if (field.key === 'discount9') valueClass += ' discount-val';
       html += '<div class="card-field"><span class="card-field-label">' + field.label + '</span><span class="card-field-value' + valueClass + '">' + escHtml(val) + '</span></div>';
     });
     html += '</div>';
@@ -1084,7 +1027,6 @@ function renderTable(records) {
   html += '<th class="th-check">选</th>';
   html += '<th>状态</th>';
   DISPLAY_FIELDS.forEach(function(field) {
-    if (field.key === 'discount9' && !showDiscount) return; // 受9折开关控制
     html += '<th>' + field.label + '</th>';
   });
   html += '</tr></thead><tbody>';
@@ -1101,13 +1043,7 @@ function renderTable(records) {
     html += '<td class="td-check"><span class="check-box' + (isSelected ? ' checked' : '') + '" onclick="toggleSelect(\'' + record._id + '\')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span></td>';
     html += '<td><span class="status-badge ' + statusClass + '" onclick="toggleStatus(\'' + recSheet + '\',' + record.seq + ')">' + statusText + '</span></td>';
     DISPLAY_FIELDS.forEach(function(field) {
-      if (field.key === 'discount9' && !showDiscount) return; // 受9折开关控制
-      // 隐藏折扣时，合计显示折后价
-      var rawVal = record[field.key];
-      if (field.key === 'total' && !showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) {
-        rawVal = record.discount9;
-      }
-      const val = fmtValue(rawVal, field.type);
+      const val = fmtValue(record[field.key], field.type);
       const cls = field.type === 'money' ? ' class="td-money"' : '';
       html += '<td' + cls + '>' + escHtml(val) + '</td>';
     });
@@ -1140,22 +1076,6 @@ function toggleStatus(sheetName, seq) {
   } else {
     renderData(SHEETS[currentSheet]);
   }
-}
-
-// ===== Toggle Discount (9折) Visibility =====
-function toggleDiscount() {
-  showDiscount = !showDiscount;
-  // 持久化到 localStorage，刷新后保持状态
-  try { localStorage.setItem('heating_show_discount', showDiscount ? '1' : '0'); } catch(e) {}
-  // 更新顶部按钮文字
-  const tEl = document.getElementById('discountToggleText');
-  if (tEl) tEl.textContent = showDiscount ? '隐藏折扣' : '显示折扣';
-  if (filteredRecords.length > 0) {
-    renderData(filteredRecords);
-  } else {
-    renderData(SHEETS[currentSheet]);
-  }
-  showToast(showDiscount ? '已显示9折优惠' : '已隐藏9折优惠');
 }
 
 // ===== Cart-style Multi-Select =====
@@ -1192,14 +1112,7 @@ function updateBottomBar() {
   const items = getSelectedItems();
   const count = items.length;
   let total = 0;
-  items.forEach(function(it) {
-    // 隐藏折扣时，合计用折后价
-    if (!showDiscount && it.record.discount9 !== '' && it.record.discount9 !== null && it.record.discount9 !== undefined) {
-      total += Number(it.record.discount9) || 0;
-    } else {
-      total += Number(it.record.total) || 0;
-    }
-  });
+  items.forEach(function(it) { total += Number(it.record.total) || 0; });
 
   if (currentRenderedRecords.length === 0) {
     bar.classList.remove('show');
@@ -1284,28 +1197,20 @@ async function exportSelected() {
 // ===== Export Receipt Template =====
 
 // Shared: render the "other fields" (areas/owner/fees/discount/remark) for one record.
-// 受 showDiscount 控制：9折字段随开关显示/隐藏。
+// Shared: render the "other fields" (areas/owner/fees/remark) for one record.
 function buildRecordDetailFields(record) {
   let html = '';
   DISPLAY_FIELDS.forEach(function(field) {
     if (['roomNo', 'brand', 'tenant'].indexOf(field.key) >= 0) return; // already shown above
-    if (field.key === 'discount9' && !showDiscount) return; // 受9折开关控制，导出图片同步
-    // 隐藏折扣时，合计显示折后价（discount9），让客户只看到应缴金额
-    var rawVal = record[field.key];
-    if (field.key === 'total' && !showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) {
-      rawVal = record.discount9;
-    }
-    const val = fmtValue(rawVal, field.type);
+    const val = fmtValue(record[field.key], field.type);
     if (val === '-' && field.key !== 'remark') return;
     if (field.key === 'remark' && !record[field.key]) return;
     let valueClass = 'export-field-value';
     if (field.type === 'money') valueClass += ' money';
     if (field.type === 'remark' && record[field.key]) valueClass += ' remark-val';
-    let valueStyle = '';
-    if (field.key === 'discount9') valueStyle = ' style="color:#D97706"';
     html += '<div class="export-field-row">';
     html += '<div class="export-field-label">' + field.label + '</div>';
-    html += '<div class="' + valueClass + '"' + valueStyle + '>' + escHtml(val) + '</div>';
+    html += '<div class="' + valueClass + '">' + escHtml(val) + '</div>';
     html += '</div>';
   });
   return html;
@@ -1377,7 +1282,6 @@ function buildGroupReceiptHTML(subtitle, items) {
   html += '<hr class="export-receipt-divider">';
 
   let totalSum = 0;
-  let discountSum = 0;
 
   items.forEach(function(item, idx) {
     const record = item.record;
@@ -1412,15 +1316,7 @@ function buildGroupReceiptHTML(subtitle, items) {
     html += '<div class="export-field-value" style="color:' + statusColor + ';font-weight:600">' + statusText + '</div>';
     html += '</div>';
 
-    if (record.total !== '' && record.total !== null && record.total !== undefined) {
-      // 隐藏折扣时，合计汇总用折后价
-      if (!showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) {
-        totalSum += Number(record.discount9);
-      } else {
-        totalSum += Number(record.total);
-      }
-    }
-    if (showDiscount && record.discount9 !== '' && record.discount9 !== null && record.discount9 !== undefined) discountSum += Number(record.discount9);
+    if (record.total !== '' && record.total !== null && record.total !== undefined) totalSum += Number(record.total);
 
     html += '<hr class="export-room-divider">';
   });
@@ -1432,12 +1328,6 @@ function buildGroupReceiptHTML(subtitle, items) {
   html += '<div class="export-field-label">合计费用</div>';
   html += '<div class="export-field-value money" style="color:#DC2626;font-size:17px">' + fmtMoney(totalSum) + ' 元</div>';
   html += '</div>';
-  if (showDiscount) {
-    html += '<div class="export-field-row">';
-    html += '<div class="export-field-label">9折优惠合计</div>';
-    html += '<div class="export-field-value money" style="color:#D97706;font-size:17px">' + fmtMoney(discountSum) + ' 元</div>';
-    html += '</div>';
-  }
   html += '</div>';
 
   html += '<div class="export-stamp">打印时间：' + new Date().toLocaleString('zh-CN') + '</div>';
@@ -1453,9 +1343,6 @@ function buildTenantReceiptHTML(tenantName, items) {
 function init() {
   renderStats();
   renderTabs();
-  // Sync discount toggle button text with loaded state
-  const tEl = document.getElementById('discountToggleText');
-  if (tEl) tEl.textContent = showDiscount ? '隐藏折扣' : '显示折扣';
   // Show current sheet's full list on load
   renderData(SHEETS[currentSheet]);
 
